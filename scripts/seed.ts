@@ -1,3 +1,4 @@
+import "dotenv/config";
 /**
  * Beforehand — question bank seed pipeline.
  *

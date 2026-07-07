@@ -1,4 +1,5 @@
 import NextAuth from "next-auth";
+import type { DefaultSession } from "next-auth";
 import Resend from "next-auth/providers/resend";
 import { DrizzleAdapter } from "@auth/drizzle-adapter";
 import { db } from "@/db";
@@ -8,6 +9,12 @@ import {
   users,
   verificationTokens,
 } from "@/db/schema";
+
+declare module "next-auth" {
+  interface Session {
+    user: { id: string } & DefaultSession["user"];
+  }
+}
 
 /**
  * Magic-link auth (no passwords). The invitation-accept flow reuses this:

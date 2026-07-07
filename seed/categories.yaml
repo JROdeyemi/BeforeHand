@@ -1,0 +1,25 @@
+# The 12 launch categories. Order = display order.
+- slug: finance
+  name: Finance
+- slug: parenting
+  name: Parenting
+- slug: sexuality
+  name: Sexuality
+- slug: faith
+  name: Faith & Spirituality
+- slug: chores
+  name: Chores & Home Life
+- slug: career
+  name: Career & Ambition
+- slug: extended-family
+  name: Extended Family & In-Laws
+- slug: housing
+  name: Housing
+- slug: conflict
+  name: Stress & Conflict Style
+- slug: sexual-history
+  name: Sexual History
+- slug: food
+  name: Food & Kitchen
+- slug: cultural
+  name: Tribal & Cultural Expectations

@@ -1,0 +1,28 @@
+# Finance — SAMPLE questions demonstrating the format. The full reviewed
+# bank ships in Phase 3. Format rules: references/question-bank.md in the
+# beforehand-app skill. Ids are permanent; retire with active: false.
+- id: fin-001
+  text: "Once we're committed, all income becomes joint money — separate personal accounts end."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-002
+  text: "We will agree on a spending limit above which neither of us buys anything without talking to the other first."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-003
+  text: "I expect to financially support my parents or siblings on a regular basis, and that will come from our shared money."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-004
+  text: "One of us pausing our career to care for children full-time is on the table."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: fin-005
+  text: "I want to know each other's full financial picture — debts, savings, and obligations — before we get engaged."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true

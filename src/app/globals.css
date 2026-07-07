@@ -1,0 +1,22 @@
+@import "tailwindcss";
+
+/*
+ * Beforehand — foundation tokens (Phase 1 shell; full design pass in Phase 2).
+ * Register: romantic seriousness. Evening ink + candlelight — deliberately
+ * not the cream/terracotta or black/acid-green defaults.
+ */
+@theme {
+  --color-ink: #1c2331;        /* evening ink blue */
+  --color-ink-soft: #303a4e;
+  --color-linen: #f6f4ef;      /* warm off-white, cooler than cream */
+  --color-candle: #d8a24a;     /* candlelight gold accent */
+  --color-candle-deep: #a97a2f;
+  --color-rose: #b4556a;       /* used sparingly */
+
+  --font-display: "Cormorant Garamond", Georgia, "Times New Roman", serif;
+  --font-body: "Avenir Next", "Segoe UI", system-ui, -apple-system, sans-serif;
+}
+
+html {
+  font-family: var(--font-body);
+}

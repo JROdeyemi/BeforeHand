@@ -17,10 +17,11 @@ Settled decisions. Future sessions: do not re-litigate; append new entries with 
 | 2026-07 | Phase 2: cultural contexts from DB | Always read from DB; adding Yoruba, Igbo, Hausa is a YAML seed + re-run, not a code change. |
 | 2026-07 | Phase 2: one invitation per session | Phase 2 creates exactly one invitation; no re-invite or change-partner flow. |
 | 2026-07 | Phase 2: inviter name fallback | Invitation email and accept page fall back to inviter's email when `users.name` is null. |
+| 2026-07 | Phase 4: submission gate (#8) | Submission requires 100% of applicable questions answered (bank questions matching stage+context, plus all custom questions in the session); a question deactivated mid-session drops out of the required set for partners who haven't answered it. |
+| 2026-07 | Phase 4: placeholder report on mutual submit | Phase 4 inserts `payload = {}` when both partners submit, so the report gate works without a null check. Phase 6 must regenerate any report row whose payload is `{}` before surfacing the report UI. No real couple will complete a session before Phase 6 ships, but the backfill query must be written as part of Phase 6 to be safe. |
 
 ## Open (see beforehand-app skill, tech-stack.md)
 - #7 Cultural context launch list — **Universal-only at Phase 2 launch**; Yoruba, Igbo, Hausa deferred (seed + code-change-free to add)
-- #8 Skipping questions on submit
 - #9 Monetization
 - #10 Branding assets
 - #11 Data deletion policy

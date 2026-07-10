@@ -13,10 +13,12 @@
  * "getAnswersForSession" — the type system shouldn't even offer the
  * unsafe query.
  */
-import { and, eq, count } from "drizzle-orm";
+import { and, count, eq, inArray, isNotNull } from "drizzle-orm";
 import type { Db } from "./index";
 import {
   answers,
+  categories,
+  categoryDesignations,
   coupleSessions,
   customQuestions,
   questions,
@@ -33,6 +35,14 @@ export class NotSessionMemberError extends Error {
 export class ReportNotReadyError extends Error {
   constructor() {
     super("The report unlocks when both partners have submitted.");
+  }
+}
+
+export class SubmitNotReadyError extends Error {
+  constructor(remaining: number) {
+    super(
+      `${remaining} question${remaining === 1 ? "" : "s"} still need${remaining === 1 ? "s" : ""} an answer before you can submit.`,
+    );
   }
 }
 
@@ -70,6 +80,9 @@ export async function getOwnAnswers(db: Db, sessionId: string, userId: string) {
  * The partner's progress, as a bare percentage. This is the ONLY view
  * of the partner's answering activity that exists before report_ready —
  * never category breakdowns, never which questions.
+ *
+ * Counts only answers joined to currently-applicable questions so that
+ * a deactivated question does not inflate the partner's apparent progress.
  */
 export async function getPartnerProgressPercent(
   db: Db,
@@ -86,11 +99,7 @@ export async function getPartnerProgressPercent(
   const applicable = await countApplicableQuestions(db, sessionId, partnerId);
   if (applicable === 0) return 0;
 
-  const [{ value: answered }] = await db
-    .select({ value: count() })
-    .from(answers)
-    .where(and(eq(answers.sessionId, sessionId), eq(answers.userId, partnerId)));
-
+  const answered = await countAnsweredApplicable(db, sessionId, partnerId, session);
   return Math.min(100, Math.round((answered / applicable) * 100));
 }
 
@@ -146,10 +155,236 @@ export async function countApplicableQuestions(
         q.contexts.includes(session.culturalContextSlug)),
   );
 
-  const custom = await db
-    .select()
+  const [{ value: customCount }] = await db
+    .select({ value: count() })
     .from(customQuestions)
     .where(eq(customQuestions.sessionId, sessionId));
 
-  return applicableBank.length + custom.length;
+  return applicableBank.length + customCount;
+}
+
+/**
+ * Own category designations (core/flexible) as a slug → value map.
+ * Safe to return to the requesting user only.
+ */
+export async function getOwnDesignations(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<Record<string, "core" | "flexible">> {
+  await getSessionForMember(db, sessionId, userId);
+  const rows = await db
+    .select()
+    .from(categoryDesignations)
+    .where(
+      and(
+        eq(categoryDesignations.sessionId, sessionId),
+        eq(categoryDesignations.userId, userId),
+      ),
+    );
+  return Object.fromEntries(rows.map((r) => [r.categorySlug, r.designation]));
+}
+
+/**
+ * True when the user has designated every category in the DB for this session.
+ * Required before answering begins.
+ */
+export async function areAllCategoriesDesignated(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<boolean> {
+  await getSessionForMember(db, sessionId, userId);
+  const [{ total }] = await db
+    .select({ total: count() })
+    .from(categories);
+  const [{ designated }] = await db
+    .select({ designated: count() })
+    .from(categoryDesignations)
+    .where(
+      and(
+        eq(categoryDesignations.sessionId, sessionId),
+        eq(categoryDesignations.userId, userId),
+      ),
+    );
+  return total > 0 && designated >= total;
+}
+
+/**
+ * Per-category own progress — safe to show to the requesting user.
+ * Counts only answers joined to currently-active applicable questions,
+ * so deactivated questions do not inflate progress.
+ * Custom questions appear under the "personal" key.
+ *
+ * NEVER call this for the partner — use getPartnerProgressPercent instead.
+ */
+export async function getOwnProgressByCategory(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<{ categorySlug: string; answered: number; total: number }[]> {
+  const session = await getSessionForMember(db, sessionId, userId);
+
+  // All currently-active bank questions
+  const bank = await db
+    .select({
+      id: questions.id,
+      categorySlug: questions.categorySlug,
+      stages: questions.stages,
+      contexts: questions.contexts,
+    })
+    .from(questions)
+    .where(eq(questions.isActive, true));
+
+  // Filter to questions applicable for this session's stage + context
+  const applicable = bank.filter(
+    (q) =>
+      q.stages.includes(session.relationshipStage) &&
+      (q.contexts.length === 0 ||
+        q.contexts.includes(session.culturalContextSlug)),
+  );
+
+  const byCategory = new Map<string, { answered: number; total: number }>();
+
+  if (applicable.length > 0) {
+    const applicableIds = applicable.map((q) => q.id);
+    const userBankAnswers = await db
+      .select({ questionId: answers.questionId })
+      .from(answers)
+      .where(
+        and(
+          eq(answers.sessionId, sessionId),
+          eq(answers.userId, userId),
+          isNotNull(answers.questionId),
+          inArray(answers.questionId, applicableIds),
+        ),
+      );
+    const answeredIds = new Set(userBankAnswers.map((a) => a.questionId));
+
+    for (const q of applicable) {
+      const entry = byCategory.get(q.categorySlug) ?? { answered: 0, total: 0 };
+      entry.total++;
+      if (answeredIds.has(q.id)) entry.answered++;
+      byCategory.set(q.categorySlug, entry);
+    }
+  }
+
+  // Custom questions appear under a "personal" bucket
+  const custom = await db
+    .select({ id: customQuestions.id })
+    .from(customQuestions)
+    .where(eq(customQuestions.sessionId, sessionId));
+
+  if (custom.length > 0) {
+    const customIds = custom.map((c) => c.id);
+    const [{ value: answeredCustom }] = await db
+      .select({ value: count() })
+      .from(answers)
+      .where(
+        and(
+          eq(answers.sessionId, sessionId),
+          eq(answers.userId, userId),
+          inArray(answers.customQuestionId, customIds),
+        ),
+      );
+    byCategory.set("personal", {
+      answered: answeredCustom,
+      total: custom.length,
+    });
+  }
+
+  return Array.from(byCategory.entries()).map(([categorySlug, counts]) => ({
+    categorySlug,
+    ...counts,
+  }));
+}
+
+/**
+ * True when the user has answered every currently-applicable question
+ * (bank + custom). This is the authoritative server-side submit gate.
+ * Throws SubmitNotReadyError if not ready, so callers can propagate
+ * the remaining count to the UI.
+ */
+export async function canSubmit(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<true> {
+  const session = await getSessionForMember(db, sessionId, userId);
+  const answered = await countAnsweredApplicable(db, sessionId, userId, session);
+  const total = await countApplicableQuestions(db, sessionId, userId);
+  if (answered < total) throw new SubmitNotReadyError(total - answered);
+  if (total === 0) throw new SubmitNotReadyError(0);
+  return true;
+}
+
+// ---------------------------------------------------------------------------
+// Internal helpers
+// ---------------------------------------------------------------------------
+
+type SessionRow = Awaited<ReturnType<typeof getSessionForMember>>;
+
+/**
+ * Count how many currently-applicable questions (bank + custom) a user
+ * has answered. Used by canSubmit and getPartnerProgressPercent.
+ * Counts only answers joined to active questions so deactivated questions
+ * do not inflate the numerator.
+ */
+async function countAnsweredApplicable(
+  db: Db,
+  sessionId: string,
+  userId: string,
+  session: SessionRow,
+): Promise<number> {
+  // Bank questions
+  const bank = await db
+    .select({ id: questions.id, stages: questions.stages, contexts: questions.contexts })
+    .from(questions)
+    .where(eq(questions.isActive, true));
+  const applicableBank = bank.filter(
+    (q) =>
+      q.stages.includes(session.relationshipStage) &&
+      (q.contexts.length === 0 ||
+        q.contexts.includes(session.culturalContextSlug)),
+  );
+
+  let answeredBank = 0;
+  if (applicableBank.length > 0) {
+    const ids = applicableBank.map((q) => q.id);
+    const [{ value }] = await db
+      .select({ value: count() })
+      .from(answers)
+      .where(
+        and(
+          eq(answers.sessionId, sessionId),
+          eq(answers.userId, userId),
+          inArray(answers.questionId, ids),
+        ),
+      );
+    answeredBank = value;
+  }
+
+  // Custom questions
+  const custom = await db
+    .select({ id: customQuestions.id })
+    .from(customQuestions)
+    .where(eq(customQuestions.sessionId, sessionId));
+
+  let answeredCustom = 0;
+  if (custom.length > 0) {
+    const ids = custom.map((c) => c.id);
+    const [{ value }] = await db
+      .select({ value: count() })
+      .from(answers)
+      .where(
+        and(
+          eq(answers.sessionId, sessionId),
+          eq(answers.userId, userId),
+          inArray(answers.customQuestionId, ids),
+        ),
+      );
+    answeredCustom = value;
+  }
+
+  return answeredBank + answeredCustom;
 }

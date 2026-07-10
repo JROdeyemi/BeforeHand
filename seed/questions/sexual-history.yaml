@@ -1,0 +1,62 @@
+# Sexual History — drafted for founder review. All active: false until sign-off.
+
+- id: sxh-001
+  text: "Before we marry, we both get tested — full STI panel — and share the results with each other."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-002
+  text: "I have a right to know the broad truth of my partner's sexual past — not every detail, but nothing that rewrites who I thought I was marrying."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-003
+  text: "The number of past partners is something I'm entitled to ask — and answer honestly."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-004
+  text: "My partner's past is the past — it will not be brought up in arguments, ever."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-005
+  text: "A serious past relationship my partner still hasn't told me about would count as a lie, not an omission."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-006
+  text: "If there is a child out there from my partner's past — even one they only suspect — I must know before we marry."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-007
+  text: "Remaining friends with an ex is acceptable — with openness about when and how they're in contact."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-008
+  text: "An ex who once mattered deeply cannot be part of our social circle — some doors stay closed."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-009
+  text: "If my partner was unfaithful in a past relationship, I need to know — it tells me something I'm entitled to weigh."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-010
+  text: "Past sexual trauma or abuse is my partner's story to tell in their own time — I will not demand it, and it changes nothing about how I see them."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-011
+  text: "Whatever is disclosed between us about the past stays in the vault — it is never repeated to family or friends, and never used as a weapon."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-012
+  text: "Once we're married, the questions stop — no re-interrogating the past every time insecurity flares."
+  stages: [engaged, married]
+  contexts: []
+  active: true

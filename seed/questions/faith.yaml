@@ -1,0 +1,92 @@
+# Faith & Spirituality — drafted for founder review. All active: false until sign-off.
+
+- id: fai-001
+  text: "We must share the same faith — not just respect each other's."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-002
+  text: "We attend the same place of worship, together, as one household."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-003
+  text: "Weekly attendance is the minimum in our home — not an occasional thing."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-004
+  text: "We pray together at home — as a couple, not just individually."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-005
+  text: "My level of religious practice will stay roughly what it is now — my partner should not expect to change it, up or down."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-006
+  text: "If one of us loses their faith entirely someday, this marriage still stands."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-007
+  text: "Our religious leader's counsel carries real weight in our private decisions — money, family planning, where we live."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-008
+  text: "Major disputes between us can be taken to our religious leader for settlement."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: fai-009
+  text: "Serving in our faith community — time, leadership roles, volunteering — comes before leisure and sometimes before family time."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-010
+  text: "Fasting and other religious disciplines are practiced in our home, and I expect my partner to participate."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-011
+  text: "Traditional practices — consulting oracles, ancestral rites, native medicine — have no place in our home, full stop."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-012
+  text: "Our wedding is a religious ceremony first — a court or traditional ceremony alone would not be a real marriage to me."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: fai-013
+  text: "Faith decides our family planning — contraception choices follow religious teaching, not just preference."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-014
+  text: "I can marry someone from a different denomination of my faith — the differences are workable."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true
+- id: fai-015
+  text: "Spiritual explanations for life events — illness, setbacks, bad dreams — are taken seriously in this home, including acting on them."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-016
+  text: "My family's expectations about our faith — where we worship, how we raise children — do not override what we two decide."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-017
+  text: "Celebrating other religions' festivals — attending, eating, exchanging gifts — is acceptable in our home."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fai-018
+  text: "I will follow my faith's teaching on a wife's or husband's role in marriage, even where it conflicts with modern expectations."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true

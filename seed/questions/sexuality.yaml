@@ -1,0 +1,92 @@
+# Sexuality — drafted for founder review. All active: false until sign-off.
+
+- id: sex-001
+  text: "We wait until marriage for sex — and that decision holds no matter how long the engagement runs."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true
+- id: sex-002
+  text: "A healthy sex life is a core pillar of this marriage — not a bonus, not an afterthought."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-003
+  text: "We can talk about sex openly — what we want, what isn't working — without anyone shutting down or taking offence."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-004
+  text: "Either of us can say no on any given night, without guilt, punishment, or a fight."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-005
+  text: "Sex is never used as a bargaining chip or withheld to make a point."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-006
+  text: "Roughly matching desire matters to me — a large, permanent gap in how often we want sex would be a serious problem."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-007
+  text: "If our sex life runs into sustained trouble, we see a professional about it — the same as we would for any health issue."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-008
+  text: "Pornography has no place in this relationship — for either of us."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-009
+  text: "Fidelity means more than not sleeping with someone else — emotional affairs and secret flirtations count as cheating."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-010
+  text: "Infidelity ends this marriage — no second chances, no exceptions."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-011
+  text: "I expect us to keep dating each other — romance, effort, attraction — for decades, not just until the wedding."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-012
+  text: "We will be open with each other about what we each find pleasurable — including things one of us hasn't tried."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: sex-013
+  text: "There are things I consider off-limits in bed, and my partner accepting those limits — permanently — is non-negotiable."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: sex-014
+  text: "Contraception is a shared responsibility — the burden doesn't fall on one of us by default."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-015
+  text: "Pregnancy, small children, stress, age — through every season, we protect intimacy rather than let it quietly die."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: sex-016
+  text: "What happens in our bedroom is never discussed with friends or family — not even as a joke."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-017
+  text: "Public affection — holding hands, a kiss in front of people — is normal for us, including in front of family."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: sex-018
+  text: "If one of us develops a health issue that affects sex — hormonal, physical, psychological — we face it together and adapt, not avoid."
+  stages: [married]
+  contexts: []
+  active: true

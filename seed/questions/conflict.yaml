@@ -1,0 +1,82 @@
+# Stress & Conflict Style — drafted for founder review. All active: true until sign-off.
+
+- id: con-001
+  text: "We do not go silent on each other — the silent treatment, days of cold distance, is not an acceptable way to handle a fight."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-002
+  text: "I need space before I can talk — pushing me to resolve things immediately makes it worse, and my partner has to respect that."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-003
+  text: "Raised voices happen — a heated argument with shouting is survivable and doesn't mean the relationship is broken."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-004
+  text: "Some things end the conversation permanently the first time they happen — insults about my family, mocking my body, throwing my past at me."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-005
+  text: "Walking out mid-argument — leaving the house, driving off — is something I will not accept as a pattern."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-006
+  text: "Apologies in this home are spoken — 'I'm sorry, I was wrong' — not performed through food, gifts, or acting normal the next day."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-007
+  text: "We don't sleep on unresolved fights as a habit — a truce before bed, even if the issue waits for morning."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-008
+  text: "When I'm stressed from work or life, I withdraw — and I need that read as pressure, not as rejection of my partner."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-009
+  text: "My partner should tell me hard truths to my face — I'd rather be hurt by honesty than managed with silence."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-010
+  text: "Bringing up old settled fights as ammunition in new ones is a line — settled means settled."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-011
+  text: "Threatening the relationship — 'maybe we should just end this' — is never said in anger unless it is meant."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-012
+  text: "Couples counseling is a tool we'd actually use — before crisis, not as the last stop before a lawyer."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-013
+  text: "If my partner struggles with their mental health — depression, anxiety, burnout — professional help is expected, not optional stubbornness."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-014
+  text: "Jokes at my expense in front of others — 'banter' that lands on real insecurities — is a fight, not a personality I have to accept."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-015
+  text: "When my partner tells me something hurt them, my first job is to hear it — not to explain why they shouldn't feel that way."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: con-016
+  text: "Any physical expression of anger toward me — grabbing, shoving, blocking my exit, breaking things — ends this relationship the first time."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true

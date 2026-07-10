@@ -1,0 +1,72 @@
+# Tribal & Cultural Expectations — drafted for founder review. All active: false until sign-off.
+
+- id: cul-001
+  text: "Marrying outside my tribe or ethnic group is fully on the table for me — including against my family's wishes."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true
+- id: cul-002
+  text: "The traditional rites — introduction, bride price, traditional wedding — are done properly and fully; skipping or shortcutting them is not an option."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: cul-003
+  text: "Whatever my family asks for in the traditional process, the demands must stay within what we two agree is reasonable — and I will push back on my own family if they don't."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: cul-004
+  text: "Our children will speak my mother tongue — not just English — and I expect my partner's support in making that happen."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-005
+  text: "Our children's names will include names from my culture, chosen through my family's naming traditions."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-006
+  text: "Cultural ceremonies around our children — naming ceremonies and the rites that follow — will be done according to tradition, not skipped as old-fashioned."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cul-007
+  text: "In our home, my culture's expectations of a husband's role and a wife's role are the starting point — modern adjustments are negotiated from there, not the other way round."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-008
+  text: "Kneeling, prostrating, and other traditional forms of respect to elders will be practiced in our family — by us and by our children."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-009
+  text: "Taking a chieftaincy title, family headship, or a traditional role someday — with the duties and costs that come with it — is part of the life I expect."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cul-010
+  text: "Village and hometown obligations — attending festivals, funerals, family meetings back home — are commitments our household honors with presence, not just money."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-011
+  text: "How and where each of us is buried will follow our customs — and I need my partner to understand that my family will have a say in mine."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cul-012
+  text: "If tradition and our own judgment conflict — on ceremonies, obligations, family demands — our judgment as a couple wins, and we face the culture's disappointment together."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-013
+  text: "My partner is expected to learn my culture — greetings, food, respect customs — well enough to be at home among my people, not a permanent guest."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cul-014
+  text: "Widowhood practices and what tradition asks of a surviving spouse: my partner and I decide now what we will and will not accept, and we defend each other's wishes to our families."
+  stages: [married]
+  contexts: []
+  active: true

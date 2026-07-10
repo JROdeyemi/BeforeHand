@@ -1,0 +1,82 @@
+# Chores & Home Life — drafted for founder review. All active: false until sign-off.
+
+- id: cho-001
+  text: "Housework is split by agreement and capacity — not by gender."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-002
+  text: "Cooking is a shared duty — 'I don't cook' is not a position either of us gets to hold."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-003
+  text: "The partner who earns more does not thereby do less at home."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-004
+  text: "Noticing what needs doing — not just doing what you're asked — is part of the job for both of us."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-005
+  text: "Paid domestic help — a cleaner, a cook, laundry service — is a normal household expense, not a luxury or a failure."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-006
+  text: "If we have live-in help, they are managed by both of us — not one person's staff."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cho-007
+  text: "My standard of tidiness is the one I expect the home to be kept at — I can't relax in a messy house."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-008
+  text: "Each of us keeps some skills of survival — either of us can cook a meal, do laundry, handle the home solo for a week."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-009
+  text: "The mental load — remembering birthdays, school forms, appointments, what's finished in the kitchen — is tracked by both of us, not delegated to one head."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cho-010
+  text: "How my partner keeps their space now is how they'll keep our home — I'm marrying the habits I can see, not the ones I'm promised."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true
+- id: cho-011
+  text: "We eat dinner together — at a table, screens away — most nights of the week."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-012
+  text: "Each of us gets genuinely private time and space at home — alone time is a need, not a rejection."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-013
+  text: "Hosting matters in our home — friends and family dropping in, being fed, staying late — and both of us carry that work."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-014
+  text: "How money is spent on the home — furniture, decor, renovations — is a joint decision, not one person's domain."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: cho-015
+  text: "A pet in the house is on the table."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: cho-016
+  text: "When one of us is sick, exhausted, or postpartum, the other absorbs their share at home without being asked and without scorekeeping."
+  stages: [engaged, married]
+  contexts: []
+  active: true

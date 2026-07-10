@@ -1,0 +1,77 @@
+# Housing — drafted for founder review. All active: false until sign-off.
+
+- id: hou-001
+  text: "We start our marriage in our own place — not with either family, not even briefly."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: hou-002
+  text: "Renting long-term is fine — owning a home is not a requirement for the life I want."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-003
+  text: "Buying land or building a house is a first-decade priority — other comforts wait for it."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-004
+  text: "Any property we acquire while married is in both our names — regardless of who paid more."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-005
+  text: "Building a house in my hometown — even if we never live there — is an obligation I intend to fulfil."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-006
+  text: "City life is the life — I could not settle in a small town or quiet suburb long-term."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-007
+  text: "Where we live is chosen by what works for us two — proximity to either family is a bonus, never the deciding factor."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-008
+  text: "Emigrating permanently — building our life in another country — is part of my plan."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-009
+  text: "I would move to my partner's country or city and start over — leaving my career network and people behind."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: hou-010
+  text: "We stretch for the nicer place — location and comfort are worth a heavy share of our income."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-011
+  text: "A home office or personal space for each of us is a requirement when we choose where to live, not a nice-to-have."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: hou-012
+  text: "Our home must be able to absorb guests — a spare room for relatives and visitors is part of any place we choose."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: hou-013
+  text: "Renting out part of our home — a flat, the BQ, a room — for income is acceptable to me."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: hou-014
+  text: "How our home looks — furniture, style, what goes on the walls — is decided by both of us, even if one of us cares more."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: hou-015
+  text: "Moving frequently — new cities, new countries, every few years — sounds like a good life to me, not an unstable one."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true

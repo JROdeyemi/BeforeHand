@@ -1,7 +1,14 @@
+import Link from "next/link";
 import { redirect } from "next/navigation";
 import { auth } from "@/auth";
 import { db } from "@/db";
-import { getSessionForMember, NotSessionMemberError } from "@/db/guards";
+import {
+  areAllCategoriesDesignated,
+  getPartnerProgressPercent,
+  getSessionForMember,
+  hasSubmitted,
+  NotSessionMemberError,
+} from "@/db/guards";
 import { getInvitationForSession } from "@/db/queries";
 
 export default async function SessionPage({
@@ -94,22 +101,80 @@ export default async function SessionPage({
         </div>
       )}
 
-      {session.status === "active" && (
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-candle">
-            Active
-          </p>
-          <h1
-            className="mt-2 text-3xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            You&rsquo;re both in.
-          </h1>
-          <p className="mt-4 text-ink-soft">
-            Questions are on their way in the next phase. Check back soon.
-          </p>
-        </div>
-      )}
+      {session.status === "active" && await (async () => {
+        const submitted = await hasSubmitted(db, id, authSession.user.id);
+
+        if (submitted) {
+          const partnerPct = await getPartnerProgressPercent(
+            db,
+            id,
+            authSession.user.id,
+          );
+          return (
+            <div>
+              <p className="text-sm uppercase tracking-[0.2em] text-candle">
+                Waiting
+              </p>
+              <h1
+                className="mt-2 text-3xl"
+                style={{ fontFamily: "var(--font-display)" }}
+              >
+                Your answers are in.
+              </h1>
+              <p className="mt-4 text-ink-soft">
+                The report unlocks the moment your partner submits. They&rsquo;re{" "}
+                <span className="font-medium text-ink">{partnerPct}% done</span>.
+              </p>
+              <button
+                type="button"
+                disabled
+                className="mt-8 rounded-xl border border-ink/20 px-5 py-2.5 text-sm text-ink-soft opacity-50"
+              >
+                Send a nudge — coming soon
+              </button>
+            </div>
+          );
+        }
+
+        const allDesignated = await areAllCategoriesDesignated(
+          db,
+          id,
+          authSession.user.id,
+        );
+        const ctaHref = allDesignated
+          ? `/sessions/${id}/answer`
+          : `/sessions/${id}/designate`;
+        const ctaLabel = allDesignated
+          ? "Continue answering"
+          : "Get started";
+
+        return (
+          <div>
+            <p className="text-sm uppercase tracking-[0.2em] text-candle">
+              Active
+            </p>
+            <h1
+              className="mt-2 text-3xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              You&rsquo;re both in.
+            </h1>
+            <p className="mt-4 text-ink-soft">
+              Answer privately at your own pace. The report unlocks when you
+              both submit.
+            </p>
+            <p className="mt-2 text-sm text-ink-soft/70">
+              Your answers are private until you both submit.
+            </p>
+            <Link
+              href={ctaHref}
+              className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
+            >
+              {ctaLabel}
+            </Link>
+          </div>
+        );
+      })()}
 
       {(session.status === "report_ready" || session.status === "closed") && (
         <div>

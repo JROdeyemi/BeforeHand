@@ -1,0 +1,102 @@
+# Extended Family & In-Laws — drafted for founder review. All active: false until sign-off.
+
+- id: ext-001
+  text: "Once we marry, our loyalty is to each other first — before parents, before siblings, every time."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-002
+  text: "What happens between us stays between us — our families do not hear about our fights."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-003
+  text: "A parent or in-law living with us permanently at some point is part of the plan."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-004
+  text: "Relatives can come and stay in our home for extended periods — weeks or months — without it being a crisis."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-005
+  text: "Family members get a key or unannounced-visit rights to our home."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: ext-006
+  text: "My parents' opinion can veto a major decision of ours — where we live, a job move, a big purchase."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-007
+  text: "If my family never fully accepts my partner, I will marry them anyway."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true
+- id: ext-008
+  text: "Taking in a sibling's or relative's child to raise for a season is something our home is open to."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: ext-009
+  text: "Where we spend major holidays rotates fairly between both families — neither side owns Christmas."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-010
+  text: "My partner is expected to attend my family's functions — weddings, burials, meetings — even when it costs time and money."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-011
+  text: "When my partner and my mother clash, I will take my partner's side in front of her — and handle my mother privately."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-012
+  text: "An in-law who disrespects me should be confronted by their own child — my partner — not by me."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-013
+  text: "How much we give my family financially is decided by both of us — my family does not get to set the amount."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-014
+  text: "We can relocate far from both families — even abroad — if it's right for us."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-015
+  text: "Living in the same compound or on the same street as my family is a plan I'd welcome."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-016
+  text: "My siblings' problems — school fees, rent, bail-outs — are our problems."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-017
+  text: "If a family member disrespects my partner repeatedly, I will cut contact — family or not."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-018
+  text: "Family can be told about our finances — what we earn, what we own."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: ext-019
+  text: "In a serious dispute between us, calling a family meeting to mediate is an acceptable path."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: ext-020
+  text: "Caring for aging parents hands-on — in our home, with our time, not just our money — is a duty we will carry."
+  stages: [engaged, married]
+  contexts: []
+  active: true

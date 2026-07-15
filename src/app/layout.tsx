@@ -33,6 +33,12 @@ export default async function RootLayout({
             <nav className="flex items-center gap-4">
               {session?.user ? (
                 <>
+                  <Link
+                    href="/sessions"
+                    className="text-sm text-ink-soft transition hover:text-ink"
+                  >
+                    Sessions
+                  </Link>
                   <span className="hidden text-sm text-ink-soft sm:block">
                     {session.user.email}
                   </span>

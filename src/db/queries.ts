@@ -5,7 +5,7 @@
  * session creator info). No answer or report data lives here — those go
  * through src/db/guards.ts exclusively.
  */
-import { asc, desc, eq } from "drizzle-orm";
+import { asc, desc, eq, or } from "drizzle-orm";
 import type { Db } from "./index";
 import {
   categories,
@@ -89,6 +89,52 @@ export async function getApplicableQuestionsForCategory(
       (q.stages as string[]).includes(session.relationshipStage) &&
       (q.contexts.length === 0 ||
         q.contexts.includes(session.culturalContextSlug)),
+  );
+}
+
+/**
+ * All couple_sessions where the user is creator or partner, newest first.
+ * Each row is enriched with the partner's email: from users if they've joined,
+ * from the latest invitation if not.
+ */
+export async function getSessionsForUser(db: Db, userId: string) {
+  const sessions = await db
+    .select()
+    .from(coupleSessions)
+    .where(
+      or(
+        eq(coupleSessions.createdByUserId, userId),
+        eq(coupleSessions.partnerUserId, userId),
+      ),
+    )
+    .orderBy(desc(coupleSessions.createdAt));
+
+  return Promise.all(
+    sessions.map(async (session) => {
+      const partnerId =
+        session.createdByUserId === userId
+          ? session.partnerUserId
+          : session.createdByUserId;
+
+      let partnerEmail: string | null = null;
+      if (partnerId) {
+        const [partner] = await db
+          .select({ email: users.email })
+          .from(users)
+          .where(eq(users.id, partnerId));
+        partnerEmail = partner?.email ?? null;
+      } else {
+        const [inv] = await db
+          .select({ invitedEmail: invitations.invitedEmail })
+          .from(invitations)
+          .where(eq(invitations.sessionId, session.id))
+          .orderBy(desc(invitations.sentAt))
+          .limit(1);
+        partnerEmail = inv?.invitedEmail ?? null;
+      }
+
+      return { ...session, partnerEmail };
+    }),
   );
 }
 

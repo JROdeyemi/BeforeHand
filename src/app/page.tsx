@@ -1,14 +1,20 @@
 import Link from "next/link";
 import { auth } from "@/auth";
+import { db } from "@/db";
+import { getSessionsForUser } from "@/db/queries";
 
-/**
- * Landing page — Phase 1 shell. The full design pass (typography,
- * signature element, founder story section) comes in Phase 2+; this
- * establishes the register and the core promise.
- */
 export default async function Home() {
   const session = await auth();
-  const isSignedIn = Boolean(session?.user);
+  const isSignedIn = Boolean(session?.user?.id);
+
+  let ctaHref = "/signin";
+  let ctaLabel = "Start the conversation";
+  if (isSignedIn && session?.user?.id) {
+    const userSessions = await getSessionsForUser(db, session.user.id);
+    const hasActive = userSessions.some((s) => s.status !== "closed");
+    ctaHref = hasActive ? "/sessions" : "/sessions/new";
+    ctaLabel = hasActive ? "Continue" : "Create a session";
+  }
 
   return (
     <main>
@@ -34,10 +40,10 @@ export default async function Home() {
           </p>
           <div className="mt-10">
             <Link
-              href={isSignedIn ? "/sessions/new" : "/signin"}
+              href={ctaHref}
               className="inline-block rounded-full bg-candle px-8 py-3 font-medium text-ink transition hover:bg-candle-deep hover:text-linen"
             >
-              {isSignedIn ? "Create a session" : "Start the conversation"}
+              {ctaLabel}
             </Link>
           </div>
           <p className="mt-6 text-sm text-linen/50">

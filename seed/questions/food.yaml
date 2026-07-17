@@ -1,4 +1,6 @@
 # Food & Kitchen — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: foo-001
   text: "Home cooking is the default in our house — regular takeout or eating out is the exception, not the rhythm."
@@ -7,16 +9,19 @@
   active: true
 - id: foo-002
   text: "Fresh food cooked daily matters to me — a week of reheated batch cooking is not how I want to eat."
+  partner_view: "Fresh food cooked daily matters to {name} — a week of reheated batch cooking is not how {they} want to eat."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: foo-003
   text: "I expect my partner to learn to cook the food I grew up on — my home's dishes become our home's dishes."
+  partner_view: "{name} expects you to learn to cook the food {they} grew up on — {their} home's dishes become your home's dishes."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: foo-004
   text: "My food traditions or restrictions — religious, ethical, health — are kept by the whole household, not just by me."
+  partner_view: "{name} expects {their} food traditions or restrictions — religious, ethical, health — to be kept by the whole household, not just by {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -37,6 +42,7 @@
   active: true
 - id: foo-008
   text: "Comments about my weight or what's on my plate are off-limits — food is not a supervision zone in this marriage."
+  partner_view: "Comments about {name}'s weight or what's on {their} plate are off-limits — food is not a supervision zone for {them}."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -57,6 +63,7 @@
   active: true
 - id: foo-012
   text: "Trying new food is part of the life I want — a partner who eats the same five dishes forever would wear on me."
+  partner_view: "Trying new food is part of the life {name} wants — a partner who eats the same five dishes forever would wear on {them}."
   stages: [early_dating, dating]
   contexts: []
   active: true

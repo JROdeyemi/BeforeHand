@@ -1,4 +1,6 @@
 # Stress & Conflict Style — drafted for founder review. All active: true until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: con-001
   text: "We do not go silent on each other — the silent treatment, days of cold distance, is not an acceptable way to handle a fight."
@@ -7,6 +9,7 @@
   active: true
 - id: con-002
   text: "I need space before I can talk — pushing me to resolve things immediately makes it worse, and my partner has to respect that."
+  partner_view: "{name} needs space before {they} can talk — pushing {them} to resolve things immediately makes it worse, and {they} need you to respect that."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -17,11 +20,13 @@
   active: true
 - id: con-004
   text: "Some things end the conversation permanently the first time they happen — insults about my family, mocking my body, throwing my past at me."
+  partner_view: "Some things end the conversation permanently for {name} the first time they happen — insults about {their} family, mocking {their} body, throwing {their} past at {them}."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: con-005
   text: "Walking out mid-argument — leaving the house, driving off — is something I will not accept as a pattern."
+  partner_view: "Walking out mid-argument — leaving the house, driving off — is something {name} will not accept as a pattern."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -37,11 +42,13 @@
   active: true
 - id: con-008
   text: "When I'm stressed from work or life, I withdraw — and I need that read as pressure, not as rejection of my partner."
+  partner_view: "When {name} is stressed from work or life, {they} withdraw — and need you to read that as pressure, not as rejection of you."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: con-009
   text: "My partner should tell me hard truths to my face — I'd rather be hurt by honesty than managed with silence."
+  partner_view: "{name} wants hard truths to {their} face — {they} would rather be hurt by your honesty than managed with silence."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -67,6 +74,7 @@
   active: true
 - id: con-014
   text: "Jokes at my expense in front of others — 'banter' that lands on real insecurities — is a fight, not a personality I have to accept."
+  partner_view: "Jokes at {name}'s expense in front of others — banter that lands on real insecurities — is a fight to {them}, not a personality {they} have to accept."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -77,6 +85,7 @@
   active: true
 - id: con-016
   text: "Any physical expression of anger toward me — grabbing, shoving, blocking my exit, breaking things — ends this relationship the first time."
+  partner_view: "Any physical expression of anger toward {name} — grabbing, shoving, blocking {their} exit, breaking things — ends this relationship the first time."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true

@@ -1,12 +1,16 @@
 # Career & Ambition — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: car-001
   text: "Both of us working is the plan — a partner who stays home long-term, by choice, is not the life I'm signing up for."
+  partner_view: "{name} wants both of you working — a partner who stays home long-term, by choice, is not the life {they} are signing up for."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
 - id: car-002
   text: "My partner earning significantly more than me — including titles, status, spotlight — sits completely fine with me."
+  partner_view: "{name} says you earning significantly more — including titles, status, spotlight — sits completely fine with {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -22,6 +26,7 @@
   active: true
 - id: car-005
   text: "Living apart for a season — one of us abroad or in another city for work — is an acceptable price for the right opportunity."
+  partner_view: "To {name}, living apart for a season — one of you abroad or in another city for work — is an acceptable price for the right opportunity."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -37,21 +42,25 @@
   active: true
 - id: car-008
   text: "Ambition is something I need in a partner — someone content to coast would frustrate me."
+  partner_view: "{name} needs ambition in a partner — someone content to coast would frustrate {them}."
   stages: [early_dating, dating]
   contexts: []
   active: true
 - id: car-009
   text: "If children come, my career can be the one that slows down — and I say that knowing what it costs."
+  partner_view: "{name} says {their} career can be the one that slows down if children come — and says it knowing what it costs."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: car-010
   text: "Going back to school — a master's, professional exams, even abroad — is in my future, and I expect my partner to carry the load while I do it."
+  partner_view: "Going back to school — a master's, professional exams, maybe abroad — is in {name}'s future, and {they} expect you to carry the load while {they} do it."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: car-011
   text: "My partner has a say in my career choices — a job offer, a resignation, a risky move gets discussed before it's decided, not announced after."
+  partner_view: "{name} holds that you have a say in {their} career choices — a job offer, a resignation, a risky move gets discussed with you before it's decided, not announced after."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -62,6 +71,7 @@
   active: true
 - id: car-013
   text: "Work that demands travel — days or weeks away, often — is compatible with the marriage I want."
+  partner_view: "{name} sees work that demands travel — days or weeks away, often — as compatible with the marriage {they} want."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -72,11 +82,13 @@
   active: true
 - id: car-015
   text: "My dream — the one that doesn't pay yet — gets protected time and money in our life, not just tolerated."
+  partner_view: "{name} has a dream that doesn't pay yet — and expects it to get protected time and money in your life, not just tolerance."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: car-016
   text: "A partner whose work I find morally questionable — the industry, the methods, the money's source — is a line for me, whatever it pays."
+  partner_view: "A partner whose work {name} finds morally questionable — the industry, the methods, the money's source — is a line for {them}, whatever it pays."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true

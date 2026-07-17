@@ -1,4 +1,6 @@
 # Chores & Home Life — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: cho-001
   text: "Housework is split by agreement and capacity — not by gender."
@@ -32,6 +34,7 @@
   active: true
 - id: cho-007
   text: "My standard of tidiness is the one I expect the home to be kept at — I can't relax in a messy house."
+  partner_view: "{name}'s standard of tidiness is the one {they} expect the home kept at — {they} can't relax in a messy house."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -47,6 +50,7 @@
   active: true
 - id: cho-010
   text: "How my partner keeps their space now is how they'll keep our home — I'm marrying the habits I can see, not the ones I'm promised."
+  partner_view: "{name} holds that how you keep your space now is how you'll keep your shared home — {they} are marrying the habits {they} can see, not the ones you promise."
   stages: [early_dating, dating]
   contexts: []
   active: true

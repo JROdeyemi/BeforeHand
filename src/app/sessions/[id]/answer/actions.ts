@@ -218,34 +218,33 @@ export async function submitAnswers(
   });
 
   if (reportJustGenerated) {
-    // Fetch both users' details for the email notification.
-    // Fire-and-forget: email failure must not block the redirect.
-    void (async () => {
-      try {
-        const session = await db
-          .select()
-          .from(coupleSessions)
-          .where(eq(coupleSessions.id, sessionId))
-          .then((rows) => rows[0]);
-        if (!session?.partnerUserId) return;
+    // Awaited before redirect so the serverless function doesn't freeze mid-send.
+    // Failures are caught and non-fatal — a missed email never blocks the user.
+    try {
+      const session = await db
+        .select()
+        .from(coupleSessions)
+        .where(eq(coupleSessions.id, sessionId))
+        .then((rows) => rows[0]);
 
+      if (session?.partnerUserId) {
         const [userA, userB] = await Promise.all([
           db.select().from(users).where(eq(users.id, session.createdByUserId)).then((r) => r[0]),
           db.select().from(users).where(eq(users.id, session.partnerUserId)).then((r) => r[0]),
         ]);
-        if (!userA || !userB) return;
-
-        await sendReportReadyEmail({
-          sessionId,
-          toA: userA.email,
-          toB: userB.email,
-          nameA: userA.name ?? userA.email,
-          nameB: userB.name ?? userB.email,
-        });
-      } catch {
-        // Email failures are non-fatal
+        if (userA && userB) {
+          await sendReportReadyEmail({
+            sessionId,
+            toA: userA.email,
+            toB: userB.email,
+            nameA: userA.name ?? userA.email,
+            nameB: userB.name ?? userB.email,
+          });
+        }
       }
-    })();
+    } catch {
+      // Email failures are non-fatal
+    }
   }
 
   redirect(`/sessions/${sessionId}`);

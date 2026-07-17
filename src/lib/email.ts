@@ -2,6 +2,15 @@ import { Resend } from "resend";
 
 const resend = new Resend(process.env.AUTH_RESEND_KEY);
 
+function escapeHtml(str: string): string {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 export async function sendInvitationEmail({
   to,
   inviterName,
@@ -13,6 +22,7 @@ export async function sendInvitationEmail({
 }): Promise<void> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const acceptUrl = `${appUrl}/invite/${token}`;
+  const safeInviterName = escapeHtml(inviterName);
 
   const html = `
 <!DOCTYPE html>
@@ -24,7 +34,7 @@ export async function sendInvitationEmail({
       Beforehand
     </p>
     <h1 style="font-size:28px;font-weight:normal;margin:0 0 20px;line-height:1.3;">
-      ${inviterName} has invited you to Beforehand.
+      ${safeInviterName} has invited you to Beforehand.
     </h1>
     <p style="font-size:16px;line-height:1.7;color:#303a4e;margin:0 0 16px;">
       Each of you answers questions about money, family, faith, intimacy, and
@@ -46,7 +56,7 @@ export async function sendInvitationEmail({
     </a>
     <p style="font-size:13px;color:#303a4e;margin-top:48px;line-height:1.6;">
       This invitation doesn't expire.<br>
-      If you don't know ${inviterName}, you can safely ignore this email.
+      If you don't know ${safeInviterName}, you can safely ignore this email.
     </p>
   </div>
 </body>
@@ -94,6 +104,8 @@ export async function sendReportReadyEmail({
   const reportUrl = `${appUrl}/sessions/${sessionId}/report`;
 
   function buildEmail(viewerName: string, partnerName: string) {
+    const safeViewerName = escapeHtml(viewerName);
+    const safePartnerName = escapeHtml(partnerName);
     const html = `
 <!DOCTYPE html>
 <html lang="en">
@@ -104,10 +116,10 @@ export async function sendReportReadyEmail({
       Beforehand
     </p>
     <h1 style="font-size:28px;font-weight:normal;margin:0 0 20px;line-height:1.3;">
-      Your report is ready, ${viewerName}.
+      Your report is ready, ${safeViewerName}.
     </h1>
     <p style="font-size:16px;line-height:1.7;color:#303a4e;margin:0 0 16px;">
-      You and ${partnerName} have both submitted your answers. Your report is now
+      You and ${safePartnerName} have both submitted your answers. Your report is now
       available — it shows where you align, where there&rsquo;s tension, and what
       each of you holds as a non-negotiable.
     </p>
@@ -168,6 +180,8 @@ export async function sendNudgeEmail({
 }): Promise<void> {
   const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
   const sessionUrl = `${appUrl}/sessions/${sessionId}`;
+  const safeSenderName = escapeHtml(senderName);
+  const safeMessageText = escapeHtml(messageText);
 
   const html = `
 <!DOCTYPE html>
@@ -179,10 +193,10 @@ export async function sendNudgeEmail({
       Beforehand
     </p>
     <h1 style="font-size:28px;font-weight:normal;margin:0 0 20px;line-height:1.3;">
-      A little nudge from ${senderName} 💛
+      A little nudge from ${safeSenderName} 💛
     </h1>
     <p style="font-size:20px;line-height:1.6;color:#1c2331;margin:0 0 36px;font-style:italic;">
-      &ldquo;${messageText}&rdquo;
+      &ldquo;${safeMessageText}&rdquo;
     </p>
     <a href="${sessionUrl}"
        style="display:inline-block;background:#1c2331;color:#f6f4ef;text-decoration:none;

@@ -1,14 +1,15 @@
 # Parenting — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: par-001
   text: "I want children — this is not negotiable for me."
-  partner_view: "{name} wants children — this isn't negotiable for {them}."
+  partner_view: "{name} wants children — this is not negotiable for {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
 - id: par-002
   text: "We agree on a specific number of children before we marry, and we hold to it."
-  partner_view: "{name} wants to agree on a specific number of children before marriage, and hold to it."
   stages: [dating, engaged]
   contexts: []
   active: true
@@ -39,6 +40,7 @@
   active: true
 - id: par-008
   text: "Our children will be raised in one faith — mine."
+  partner_view: "{name} wants your children raised in one faith — {their} own."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -54,6 +56,7 @@
   active: true
 - id: par-011
   text: "My mother (or his/her mother) moving in to help after a baby arrives is how it will be done."
+  partner_view: "{name} expects a mother — {their} own or yours — to move in and help after a baby arrives; to {them}, that is how it is done."
   stages: [dating, engaged, married]
   contexts: []
   active: true

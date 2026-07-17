@@ -1,21 +1,22 @@
 # Finance — drafted for founder review. New questions active: false.
 # Ids are permanent. Review rule: cut what couples don't fight about,
 # add what they do.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: fin-001
   text: "Once we're committed, all income becomes joint money — separate personal accounts end."
-  partner_view: "{name} sees all income as joint money once you're committed — separate accounts would end."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: fin-002
   text: "We will agree on a spending limit above which neither of us buys anything without talking to the other first."
-  partner_view: "{name} wants a spending limit you both agree on — anything above it means checking in first."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: fin-003
   text: "I expect to financially support my parents or siblings on a regular basis, and that will come from our shared money."
+  partner_view: "{name} expects to financially support {their} parents or siblings on a regular basis — and expects it to come from your shared money."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -26,6 +27,7 @@
   active: true
 - id: fin-005
   text: "I want to know each other's full financial picture — debts, savings, and obligations — before we get engaged."
+  partner_view: "{name} wants you both to lay out your full financial pictures — debts, savings, and obligations — before getting engaged."
   stages: [early_dating, dating]
   contexts: []
   active: true
@@ -36,6 +38,7 @@
   active: true
 - id: fin-007
   text: "I expect to know my partner's exact income — not a ballpark figure."
+  partner_view: "{name} expects to know your exact income — not a ballpark figure."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -101,6 +104,7 @@
   active: true
 - id: fin-020
   text: "A money secret — a hidden account, undisclosed debt, quiet spending — counts as lying to me."
+  partner_view: "To {name}, a money secret — a hidden account, undisclosed debt, quiet spending — counts as lying."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true

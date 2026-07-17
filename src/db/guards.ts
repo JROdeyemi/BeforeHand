@@ -13,7 +13,7 @@
  * "getAnswersForSession" — the type system shouldn't even offer the
  * unsafe query.
  */
-import { and, count, eq, inArray, isNotNull } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNotNull } from "drizzle-orm";
 import type { Db, DbOrTx } from "./index";
 import { analyzeSession } from "@/lib/analysis";
 import {
@@ -22,6 +22,7 @@ import {
   categoryDesignations,
   coupleSessions,
   customQuestions,
+  nudges,
   questions,
   reports,
   spotlights,
@@ -122,6 +123,42 @@ export async function getPartnerProgressPercent(
 
   const answered = await countAnsweredApplicable(db, sessionId, partnerId, session);
   return Math.min(100, Math.round((answered / applicable) * 100));
+}
+
+/**
+ * The requesting user's own progress, as a bare percentage.
+ * Always safe — a user may read their own completion state.
+ */
+export async function getOwnProgressPercent(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<number> {
+  const session = await getSessionForMember(db, sessionId, userId);
+  const applicable = await countApplicableQuestions(db, sessionId, userId);
+  if (applicable === 0) return 0;
+  const answered = await countAnsweredApplicable(db, sessionId, userId, session);
+  return Math.min(100, Math.round((answered / applicable) * 100));
+}
+
+/**
+ * The sentAt timestamp of the most recent nudge this user sent in this
+ * session, or null if they have never sent one. Used to enforce the 24h
+ * rate limit server-side and to hydrate the UI's initial sent state.
+ */
+export async function getLastNudgeSentAt(
+  db: Db,
+  sessionId: string,
+  fromUserId: string,
+): Promise<Date | null> {
+  await getSessionForMember(db, sessionId, fromUserId);
+  const [row] = await db
+    .select({ sentAt: nudges.sentAt })
+    .from(nudges)
+    .where(and(eq(nudges.sessionId, sessionId), eq(nudges.fromUserId, fromUserId)))
+    .orderBy(desc(nudges.sentAt))
+    .limit(1);
+  return row?.sentAt ?? null;
 }
 
 /**

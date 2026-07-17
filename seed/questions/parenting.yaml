@@ -1,0 +1,109 @@
+# Parenting — drafted for founder review. All active: false until sign-off.
+
+- id: par-001
+  text: "I want children — this is not negotiable for me."
+  partner_view: "{name} wants children — this isn't negotiable for {them}."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-002
+  text: "We agree on a specific number of children before we marry, and we hold to it."
+  partner_view: "{name} wants to agree on a specific number of children before marriage, and hold to it."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: par-003
+  text: "We start trying for children within the first two years of marriage."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: par-004
+  text: "If we struggle to conceive, medical routes like IVF are on the table for us."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-005
+  text: "If we cannot have biological children, we adopt."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-006
+  text: "Struggling to conceive stays between us and our doctors — not our families."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-007
+  text: "Smacking or spanking is an acceptable way to discipline our children."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-008
+  text: "Our children will be raised in one faith — mine."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-009
+  text: "One parent staying home full-time while the children are young matters more than the second income."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-010
+  text: "Live-in help — a nanny or a relative — raising our children alongside us is acceptable."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-011
+  text: "My mother (or his/her mother) moving in to help after a baby arrives is how it will be done."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-012
+  text: "Grandparents may discipline our children their own way when the children are with them."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-013
+  text: "Our children go to private school, whatever it costs us."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-014
+  text: "Sending our children abroad for education is a goal worth sacrificing for."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-015
+  text: "Day-to-day childcare — feeding, bathing, night wakings, school runs — is split equally between us, not led by one of us."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-016
+  text: "Boys and girls are raised with the same rules, chores, and freedoms in our home."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-017
+  text: "Our children's names are decided by us two alone — family tradition and elders get input only if we invite it."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-018
+  text: "If one of us has a child from a previous relationship, that child is fully part of our home and our money."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: par-019
+  text: "Our children will get honest, age-appropriate answers about sex and their bodies from us — before they hear it elsewhere."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-020
+  text: "When we disagree in front of the children, we present one united answer and settle it later in private."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: par-021
+  text: "A child with a serious disability changes our plans, not our commitment — we raise our child ourselves, whatever it takes."
+  stages: [engaged, married]
+  contexts: []
+  active: true

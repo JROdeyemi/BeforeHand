@@ -1,13 +1,16 @@
-# Finance — SAMPLE questions demonstrating the format. The full reviewed
-# bank ships in Phase 3. Format rules: references/question-bank.md in the
-# beforehand-app skill. Ids are permanent; retire with active: false.
+# Finance — drafted for founder review. New questions active: false.
+# Ids are permanent. Review rule: cut what couples don't fight about,
+# add what they do.
+
 - id: fin-001
   text: "Once we're committed, all income becomes joint money — separate personal accounts end."
+  partner_view: "{name} sees all income as joint money once you're committed — separate accounts would end."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: fin-002
   text: "We will agree on a spending limit above which neither of us buys anything without talking to the other first."
+  partner_view: "{name} wants a spending limit you both agree on — anything above it means checking in first."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -24,5 +27,90 @@
 - id: fin-005
   text: "I want to know each other's full financial picture — debts, savings, and obligations — before we get engaged."
   stages: [early_dating, dating]
+  contexts: []
+  active: true
+- id: fin-006
+  text: "Any debt either of us brings into this marriage becomes our joint responsibility to clear."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-007
+  text: "I expect to know my partner's exact income — not a ballpark figure."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-008
+  text: "There is a monthly limit on what we give to extended family, and we set that limit together."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-009
+  text: "One of us will be the primary financial decision-maker in this home."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-010
+  text: "We will give a fixed share of our income to our faith community, and it comes out before anything else."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-011
+  text: "Major purchases — land, property, a car — require both of us to agree, even if one of us earns far more."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: fin-012
+  text: "We each keep some personal 'no questions asked' spending money every month."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-013
+  text: "Lending money to friends or family is acceptable, even knowing it may never come back."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-014
+  text: "Household costs are split in proportion to what each of us earns — not 50/50."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-015
+  text: "We build an emergency fund covering several months of expenses before any big lifestyle spending."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: fin-016
+  text: "A prenuptial agreement — or a written money agreement of any kind — is on the table for us."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: fin-017
+  text: "High-risk investments — crypto, forex, a friend's business — are acceptable uses of our shared money."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-018
+  text: "Gambling or sports betting with any amount of our money is acceptable."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-019
+  text: "Planning and paying for our parents' old age is part of our own family budget."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: fin-020
+  text: "A money secret — a hidden account, undisclosed debt, quiet spending — counts as lying to me."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: fin-021
+  text: "We will not start our marriage in debt for the wedding — the ceremony fits what we can afford."
+  stages: [dating, engaged]
+  contexts: []
+  active: true
+- id: fin-022
+  text: "We keep a written budget and actually review it together every month."
+  stages: [engaged, married]
   contexts: []
   active: true

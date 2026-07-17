@@ -33,9 +33,18 @@ export default async function RootLayout({
             <nav className="flex items-center gap-4">
               {session?.user ? (
                 <>
-                  <span className="hidden text-sm text-ink-soft sm:block">
-                    {session.user.email}
-                  </span>
+                  <Link
+                    href="/sessions"
+                    className="text-sm text-ink-soft transition hover:text-ink"
+                  >
+                    Sessions
+                  </Link>
+                  <Link
+                    href="/profile"
+                    className="hidden text-sm text-ink-soft transition hover:text-ink sm:block"
+                  >
+                    {session.user.name ?? session.user.email}
+                  </Link>
                   <form action={doSignOut}>
                     <button
                       type="submit"

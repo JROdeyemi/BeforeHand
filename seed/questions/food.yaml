@@ -1,0 +1,62 @@
+# Food & Kitchen — drafted for founder review. All active: false until sign-off.
+
+- id: foo-001
+  text: "Home cooking is the default in our house — regular takeout or eating out is the exception, not the rhythm."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-002
+  text: "Fresh food cooked daily matters to me — a week of reheated batch cooking is not how I want to eat."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-003
+  text: "I expect my partner to learn to cook the food I grew up on — my home's dishes become our home's dishes."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-004
+  text: "My food traditions or restrictions — religious, ethical, health — are kept by the whole household, not just by me."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-005
+  text: "A partner who genuinely cannot cook is fine by me — willingness to share the kitchen's other work is what counts."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true
+- id: foo-006
+  text: "'I don't eat that' gets respected in our house — nobody is pressured, guilted, or tricked into eating what they've declined."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-007
+  text: "How we feed our children — how much sugar, soft drinks, junk — is a real parenting decision we align on, not a whatever."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: foo-008
+  text: "Comments about my weight or what's on my plate are off-limits — food is not a supervision zone in this marriage."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-009
+  text: "Alcohol in our home — kept in it, served in it, drunk in it — is acceptable."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-010
+  text: "Groceries and food money get a real budget line — food spending is planned, not whatever the week takes."
+  stages: [engaged, married]
+  contexts: []
+  active: true
+- id: foo-011
+  text: "The kitchen belongs to both of us — nobody is a guest, and nobody is the unpaid staff."
+  stages: [dating, engaged, married]
+  contexts: []
+  active: true
+- id: foo-012
+  text: "Trying new food is part of the life I want — a partner who eats the same five dishes forever would wear on me."
+  stages: [early_dating, dating]
+  contexts: []
+  active: true

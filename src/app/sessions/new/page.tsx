@@ -1,14 +1,10 @@
-import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
 import { getActiveContexts } from "@/db/queries";
+import { requireNamedUser } from "@/lib/require-named-user";
 import SessionWizard from "./wizard";
 
 export default async function NewSessionPage() {
-  const session = await auth();
-  if (!session?.user?.id) {
-    redirect("/signin?callbackUrl=/sessions/new");
-  }
+  await requireNamedUser("/sessions/new");
 
   const contexts = await getActiveContexts(db);
 

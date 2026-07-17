@@ -137,6 +137,9 @@ export const questions = pgTable(
     contexts: text("contexts").array().notNull().default(sql`'{}'::text[]`),
     displayOrder: integer("display_order").notNull().default(0),
     isActive: boolean("is_active").notNull().default(true),
+    /** Optional reframing for the partner's perspective in the report.
+     *  Supports {name}, {their}, {them} placeholders. */
+    partnerView: text("partner_view"),
   },
   (t) => [index("question_category_idx").on(t.categorySlug)],
 );
@@ -323,6 +326,50 @@ export const reports = pgTable("report", {
   generatedAt: timestamp("generated_at", { mode: "date" }).notNull().defaultNow(),
   payload: jsonb("payload").notNull(),
 });
+
+/* -------------------------- spotlights ---------------------------- */
+
+/**
+ * ⚠️ INVARIANT-CRITICAL TABLE.
+ * A spotlight row must NEVER be readable by any user other than its author
+ * while the session is not report_ready. All cross-partner reads go through
+ * src/db/guards.ts — do not query this table directly from routes.
+ *
+ * Partial unique indexes match the answer table pattern (answer_bank_unique /
+ * answer_custom_unique) — one spotlight per (session, user, question).
+ */
+export const spotlights = pgTable(
+  "spotlight",
+  {
+    id: text("id")
+      .primaryKey()
+      .$defaultFn(() => crypto.randomUUID()),
+    sessionId: text("session_id")
+      .notNull()
+      .references(() => coupleSessions.id, { onDelete: "cascade" }),
+    userId: text("user_id")
+      .notNull()
+      .references(() => users.id),
+    questionId: text("question_id").references(() => questions.id),
+    customQuestionId: text("custom_question_id").references(
+      () => customQuestions.id,
+    ),
+    markedAt: timestamp("marked_at", { mode: "date" }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex("spotlight_bank_unique")
+      .on(t.sessionId, t.userId, t.questionId)
+      .where(sql`${t.questionId} IS NOT NULL`),
+    uniqueIndex("spotlight_custom_unique")
+      .on(t.sessionId, t.userId, t.customQuestionId)
+      .where(sql`${t.customQuestionId} IS NOT NULL`),
+    check(
+      "spotlight_exactly_one_question",
+      sql`num_nonnulls(${t.questionId}, ${t.customQuestionId}) = 1`,
+    ),
+    index("spotlight_session_user_idx").on(t.sessionId, t.userId),
+  ],
+);
 
 /* ----------------------- counselor sharing ------------------------ */
 

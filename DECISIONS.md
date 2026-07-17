@@ -20,6 +20,11 @@ Settled decisions. Future sessions: do not re-litigate; append new entries with 
 | 2026-07 | Phase 4: submission gate | Submission requires 100% of applicable questions answered (bank questions matching stage+context, plus all custom questions in the session); a question deactivated mid-session drops out of the required set for partners who haven't answered it. |
 | 2026-07 | Phase 4: placeholder report on mutual submit | Phase 4 inserts `payload = {}` when both partners submit, so the report gate works without a null check. Phase 6 must regenerate any report row whose payload is `{}` before surfacing the report UI. No real couple will complete a session before Phase 6 ships, but the backfill query must be written as part of Phase 6 to be safe. |
 
+| 2026-07 | Phase 7: name gate | requireNamedUser() helper in server components (not middleware); Auth.js DrizzleAdapter joins the user row on every auth() call so session.user.name is always current — no unstable_update needed. |
+| 2026-07 | Phase 7: partner_view | Optional field on question (seed YAML + DB column); {name}/{their}/{them} placeholders resolved at report render time; stored as partner_view_template in payload entries. |
+| 2026-07 | Phase 7: spotlight privacy | Spotlight rows follow the same guard rules as answers (readable only by their author before report_ready); cross-partner reads happen only inside computeReportPayload which requires report_ready status. spotlights field is optional in ReportPayload for backward compat with existing payloads. |
+| 2026-07 | Phase 7: spotlight indexes | Partial unique indexes (WHERE question_id IS NOT NULL / WHERE custom_question_id IS NOT NULL), matching the answer table's answer_bank_unique / answer_custom_unique pattern. |
+
 ## Open (see beforehand-app skill, tech-stack.md)
 - #7 Cultural context launch list — **Universal-only at Phase 2 launch**; Yoruba, Igbo, Hausa deferred (seed + code-change-free to add)
 - #9 Monetization

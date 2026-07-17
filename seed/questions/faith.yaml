@@ -1,8 +1,10 @@
 # Faith & Spirituality — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: fai-001
   text: "We must share the same faith — not just respect each other's."
-  partner_view: "{name} holds that you must share the same faith — mutual respect alone isn't enough for {them}."
+  partner_view: "{name} holds that you must share the same faith — mutual respect alone is not enough for {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -23,6 +25,7 @@
   active: true
 - id: fai-005
   text: "My level of religious practice will stay roughly what it is now — my partner should not expect to change it, up or down."
+  partner_view: "{name}'s level of religious practice will stay roughly what it is now — {they} do not expect you to change it, and ask the same of you."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -48,6 +51,7 @@
   active: true
 - id: fai-010
   text: "Fasting and other religious disciplines are practiced in our home, and I expect my partner to participate."
+  partner_view: "{name} practices fasting and other religious disciplines at home — and expects you to participate."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -58,6 +62,7 @@
   active: true
 - id: fai-012
   text: "Our wedding is a religious ceremony first — a court or traditional ceremony alone would not be a real marriage to me."
+  partner_view: "To {name}, your wedding must be a religious ceremony first — a court or traditional ceremony alone would not feel like a real marriage."
   stages: [dating, engaged]
   contexts: []
   active: true
@@ -68,6 +73,7 @@
   active: true
 - id: fai-014
   text: "I can marry someone from a different denomination of my faith — the differences are workable."
+  partner_view: "{name} can marry across denominations of {their} faith — the differences feel workable to {them}."
   stages: [early_dating, dating]
   contexts: []
   active: true
@@ -88,6 +94,7 @@
   active: true
 - id: fai-018
   text: "I will follow my faith's teaching on a wife's or husband's role in marriage, even where it conflicts with modern expectations."
+  partner_view: "{name} will follow {their} faith's teaching on a husband's and wife's roles in marriage — even where it conflicts with modern expectations."
   stages: [dating, engaged, married]
   contexts: []
   active: true

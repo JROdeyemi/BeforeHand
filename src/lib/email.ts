@@ -154,3 +154,66 @@ View your report: ${reportUrl}`;
   if (resA.error) throw new Error(`Resend error (A): ${resA.error.message}`);
   if (resB.error) throw new Error(`Resend error (B): ${resB.error.message}`);
 }
+
+export async function sendNudgeEmail({
+  to,
+  senderName,
+  messageText,
+  sessionId,
+}: {
+  to: string;
+  senderName: string;
+  messageText: string;
+  sessionId: string;
+}): Promise<void> {
+  const appUrl = process.env.NEXT_PUBLIC_APP_URL ?? "http://localhost:3000";
+  const sessionUrl = `${appUrl}/sessions/${sessionId}`;
+
+  const html = `
+<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background:#f6f4ef;">
+  <div style="font-family:Georgia,serif;max-width:560px;margin:0 auto;padding:48px 24px;color:#1c2331;">
+    <p style="font-size:13px;text-transform:uppercase;letter-spacing:0.2em;color:#d8a24a;margin:0 0 16px;">
+      Beforehand
+    </p>
+    <h1 style="font-size:28px;font-weight:normal;margin:0 0 20px;line-height:1.3;">
+      A little nudge from ${senderName} 💛
+    </h1>
+    <p style="font-size:20px;line-height:1.6;color:#1c2331;margin:0 0 36px;font-style:italic;">
+      &ldquo;${messageText}&rdquo;
+    </p>
+    <a href="${sessionUrl}"
+       style="display:inline-block;background:#1c2331;color:#f6f4ef;text-decoration:none;
+              padding:14px 32px;border-radius:100px;font-family:sans-serif;
+              font-size:15px;font-weight:500;">
+      Open your session &rarr;
+    </a>
+    <p style="font-size:13px;color:#303a4e;margin-top:48px;line-height:1.6;">
+      &ldquo;Before I ask for your hand&hellip; let&rsquo;s talk.&rdquo;
+    </p>
+  </div>
+</body>
+</html>`.trim();
+
+  const text = `A little nudge from ${senderName} 💛
+
+"${messageText}"
+
+Open your session: ${sessionUrl}
+
+"Before I ask for your hand… let's talk."`;
+
+  const { error } = await resend.emails.send({
+    from: process.env.EMAIL_FROM ?? "Beforehand <onboarding@resend.dev>",
+    to,
+    subject: `A little nudge from ${senderName} 💛`,
+    html,
+    text,
+  });
+
+  if (error) {
+    throw new Error(`Resend error: ${error.message}`);
+  }
+}

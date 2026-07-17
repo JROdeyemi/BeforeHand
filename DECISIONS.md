@@ -25,6 +25,10 @@ Settled decisions. Future sessions: do not re-litigate; append new entries with 
 | 2026-07 | Phase 7: spotlight privacy | Spotlight rows follow the same guard rules as answers (readable only by their author before report_ready); cross-partner reads happen only inside computeReportPayload which requires report_ready status. spotlights field is optional in ReportPayload for backward compat with existing payloads. |
 | 2026-07 | Phase 7: spotlight indexes | Partial unique indexes (WHERE question_id IS NOT NULL / WHERE custom_question_id IS NOT NULL), matching the answer table's answer_bank_unique / answer_custom_unique pattern. |
 
+| 2026-07-17 | Phase 8: nudge rate limit | 1 nudge per sender per session per 24h, enforced server-side by querying `max(sent_at)` from nudges table. Friendly error includes hours remaining. Keeps nudges "sweet, not naggy" per ux-principles.md. |
+| 2026-07-17 | Phase 8: nudge presets | 4 presets in `src/lib/nudge-presets.ts`. `message` column stores preset key (e.g. `your_move`) or raw custom text ≤200 chars. Server action resolves key → display text before sending email, keeping resolution logic in one place. |
+| 2026-07-17 | Phase 8: custom nudge moderation | Custom nudge text is unmoderated by design — product trusts its audience; 24h rate limit reduces abuse surface. Norm-setting mitigation: textarea shows caption "A nudge is encouragement — save the real conversation for after the report." |
+
 ## Open (see beforehand-app skill, tech-stack.md)
 - #7 Cultural context launch list — **Universal-only at Phase 2 launch**; Yoruba, Igbo, Hausa deferred (seed + code-change-free to add)
 - #9 Monetization

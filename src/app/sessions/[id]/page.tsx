@@ -1,15 +1,21 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   areAllCategoriesDesignated,
+  getLastNudgeSentAt,
+  getOwnProgressPercent,
   getPartnerProgressPercent,
   getSessionForMember,
   hasSubmitted,
   NotSessionMemberError,
 } from "@/db/guards";
 import { getInvitationForSession } from "@/db/queries";
+import { users } from "@/db/schema";
 import { requireNamedUser } from "@/lib/require-named-user";
+import { ProgressRing } from "@/components/progress-ring";
+import { NudgePicker } from "@/components/nudge-picker";
 
 export default async function SessionPage({
   params,
@@ -99,14 +105,41 @@ export default async function SessionPage({
       )}
 
       {session.status === "active" && await (async () => {
-        const submitted = await hasSubmitted(db, id, authSession.user.id);
+        const userId = authSession.user.id;
+        const partnerId =
+          session.createdByUserId === userId
+            ? session.partnerUserId
+            : session.createdByUserId;
+
+        const [
+          submitted,
+          ownPct,
+          partnerPct,
+          partnerUser,
+          lastNudgeSentAt,
+          partnerHasSubmitted,
+        ] = await Promise.all([
+          hasSubmitted(db, id, userId),
+          getOwnProgressPercent(db, id, userId),
+          getPartnerProgressPercent(db, id, userId),
+          partnerId
+            ? db
+                .select({ name: users.name, email: users.email })
+                .from(users)
+                .where(eq(users.id, partnerId))
+                .then((r) => r[0] ?? null)
+            : Promise.resolve(null),
+          getLastNudgeSentAt(db, id, userId),
+          partnerId ? hasSubmitted(db, id, partnerId) : Promise.resolve(false),
+        ]);
+
+        const partnerDisplayName =
+          partnerUser?.name ??
+          partnerUser?.email?.split("@")[0] ??
+          "Your partner";
+        const partnerFirstName = partnerDisplayName.split(" ")[0];
 
         if (submitted) {
-          const partnerPct = await getPartnerProgressPercent(
-            db,
-            id,
-            authSession.user.id,
-          );
           return (
             <div>
               <p className="text-sm uppercase tracking-[0.2em] text-candle">
@@ -119,16 +152,16 @@ export default async function SessionPage({
                 Your answers are in.
               </h1>
               <p className="mt-4 text-ink-soft">
-                The report unlocks the moment your partner submits. They&rsquo;re{" "}
-                <span className="font-medium text-ink">{partnerPct}% done</span>.
+                The report unlocks the moment your partner submits.
               </p>
-              <button
-                type="button"
-                disabled
-                className="mt-8 rounded-xl border border-ink/20 px-5 py-2.5 text-sm text-ink-soft opacity-50"
-              >
-                Send a nudge — coming soon
-              </button>
+              <div className="mt-6 flex gap-6">
+                <ProgressRing pct={ownPct} label="You" />
+                <ProgressRing pct={partnerPct} label={partnerFirstName} />
+              </div>
+              <NudgePicker
+                sessionId={id}
+                initialLastSentAt={lastNudgeSentAt?.toISOString() ?? null}
+              />
             </div>
           );
         }
@@ -136,14 +169,12 @@ export default async function SessionPage({
         const allDesignated = await areAllCategoriesDesignated(
           db,
           id,
-          authSession.user.id,
+          userId,
         );
         const ctaHref = allDesignated
           ? `/sessions/${id}/answer`
           : `/sessions/${id}/designate`;
-        const ctaLabel = allDesignated
-          ? "Continue answering"
-          : "Get started";
+        const ctaLabel = allDesignated ? "Continue answering" : "Get started";
 
         return (
           <div>
@@ -163,6 +194,16 @@ export default async function SessionPage({
             <p className="mt-2 text-sm text-ink-soft/70">
               Your answers are private until you both submit.
             </p>
+            <div className="mt-6 flex gap-6">
+              <ProgressRing pct={ownPct} label="You" />
+              <ProgressRing pct={partnerPct} label={partnerFirstName} />
+            </div>
+            {!partnerHasSubmitted && (
+              <NudgePicker
+                sessionId={id}
+                initialLastSentAt={lastNudgeSentAt?.toISOString() ?? null}
+              />
+            )}
             <Link
               href={ctaHref}
               className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"

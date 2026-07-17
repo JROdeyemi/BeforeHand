@@ -8,11 +8,13 @@ import { db } from "@/db";
 import {
   areAllCategoriesDesignated,
   canSubmit,
+  computeReportPayload,
   getSessionForMember,
   hasSubmitted,
   NotSessionMemberError,
   SubmitNotReadyError,
 } from "@/db/guards";
+import { sendReportReadyEmail } from "@/lib/email";
 import {
   answers,
   coupleSessions,
@@ -20,6 +22,7 @@ import {
   questions,
   reports,
   submissions,
+  users,
 } from "@/db/schema";
 import { assertTransition } from "@/lib/session-state";
 
@@ -170,6 +173,8 @@ export async function submitAnswers(
     throw err;
   }
 
+  let reportJustGenerated = false;
+
   await db.transaction(async (tx) => {
     // Lock the session row to serialize concurrent submissions.
     // Without this, two simultaneous submits both count 1 and the session
@@ -206,13 +211,41 @@ export async function submitAnswers(
         .set({ status: newStatus, reportGeneratedAt: new Date() })
         .where(eq(coupleSessions.id, sessionId));
 
-      // Placeholder report — Phase 6 regenerates any row where payload = {}
-      await tx.insert(reports).values({
-        sessionId,
-        payload: {},
-      });
+      const payload = await computeReportPayload(tx, sessionId, locked);
+      await tx.insert(reports).values({ sessionId, payload });
+      reportJustGenerated = true;
     }
   });
+
+  if (reportJustGenerated) {
+    // Awaited before redirect so the serverless function doesn't freeze mid-send.
+    // Failures are caught and non-fatal — a missed email never blocks the user.
+    try {
+      const session = await db
+        .select()
+        .from(coupleSessions)
+        .where(eq(coupleSessions.id, sessionId))
+        .then((rows) => rows[0]);
+
+      if (session?.partnerUserId) {
+        const [userA, userB] = await Promise.all([
+          db.select().from(users).where(eq(users.id, session.createdByUserId)).then((r) => r[0]),
+          db.select().from(users).where(eq(users.id, session.partnerUserId)).then((r) => r[0]),
+        ]);
+        if (userA && userB) {
+          await sendReportReadyEmail({
+            sessionId,
+            toA: userA.email,
+            toB: userB.email,
+            nameA: userA.name ?? userA.email,
+            nameB: userB.name ?? userB.email,
+          });
+        }
+      }
+    } catch {
+      // Email failures are non-fatal
+    }
+  }
 
   redirect(`/sessions/${sessionId}`);
 }

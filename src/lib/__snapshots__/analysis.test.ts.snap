@@ -1,0 +1,173 @@
+// Vitest Snapshot v1, https://vitest.dev/guide/snapshot.html
+
+exports[`analyzeSession — snapshot > produces a stable payload for a realistic fixture couple 1`] = `
+{
+  "alignment": {
+    "by_category": [
+      {
+        "aligned_count": 1,
+        "category": "finance",
+        "total": 3,
+      },
+      {
+        "aligned_count": 1,
+        "category": "parenting",
+        "total": 3,
+      },
+      {
+        "aligned_count": 1,
+        "category": "housing",
+        "total": 3,
+      },
+    ],
+    "shared_dealbreakers": [
+      {
+        "question_id": "par-02",
+        "question_text": "Would you adopt?",
+      },
+    ],
+  },
+  "coverage_notes": [
+    {
+      "excluded_question_ids": [
+        "hou-04",
+      ],
+      "reason": "only_partner_a_answered",
+    },
+  ],
+  "custom_questions": {
+    "aligned": [],
+    "dealbreaker_flags": [],
+    "shared_dealbreakers": [
+      {
+        "question_id": "cq-02",
+        "question_text": "Would you give up your career for family?",
+      },
+    ],
+    "tensions": [
+      {
+        "category": "personal",
+        "elevated": false,
+        "is_core": false,
+        "partner_a": {
+          "choice": "open_to_discussing",
+          "compromise_text": "let's set a shared goal",
+        },
+        "partner_b": {
+          "choice": "fully_on_board",
+          "compromise_text": null,
+        },
+        "question_id": "cq-01",
+        "question_text": "How do you feel about our spending habits?",
+      },
+    ],
+  },
+  "dealbreaker_flags": [
+    {
+      "category": "finance",
+      "is_core": true,
+      "partner_a": {
+        "choice": "dealbreaker",
+        "compromise_text": null,
+      },
+      "partner_b": {
+        "choice": "fully_on_board",
+        "compromise_text": null,
+      },
+      "question_id": "fin-02",
+      "question_text": "Would you prenup?",
+    },
+    {
+      "category": "housing",
+      "is_core": false,
+      "partner_a": {
+        "choice": "fully_on_board",
+        "compromise_text": null,
+      },
+      "partner_b": {
+        "choice": "dealbreaker",
+        "compromise_text": null,
+      },
+      "question_id": "hou-03",
+      "question_text": "Move for a job?",
+    },
+  ],
+  "session": {
+    "cultural_context": "universal",
+    "stage": "engaged",
+  },
+  "summary": {
+    "aligned": 2,
+    "core_categories": [
+      "finance",
+      "parenting",
+    ],
+    "dealbreaker_flags": 2,
+    "shared_dealbreakers": 1,
+    "tensions": 4,
+    "total_questions": 9,
+  },
+  "tensions": [
+    {
+      "category": "parenting",
+      "elevated": true,
+      "is_core": true,
+      "partner_a": {
+        "choice": "open_to_discussing",
+        "compromise_text": "2 or 3 kids feels right",
+      },
+      "partner_b": {
+        "choice": "dealbreaker",
+        "compromise_text": null,
+      },
+      "question_id": "par-03",
+      "question_text": "How many children?",
+    },
+    {
+      "category": "housing",
+      "elevated": true,
+      "is_core": false,
+      "partner_a": {
+        "choice": "dealbreaker",
+        "compromise_text": null,
+      },
+      "partner_b": {
+        "choice": "open_to_discussing",
+        "compromise_text": "depends on the city",
+      },
+      "question_id": "hou-02",
+      "question_text": "City or suburb?",
+    },
+    {
+      "category": "finance",
+      "elevated": false,
+      "is_core": true,
+      "partner_a": {
+        "choice": "open_to_discussing",
+        "compromise_text": "we could do 50/50 on savings",
+      },
+      "partner_b": {
+        "choice": "fully_on_board",
+        "compromise_text": null,
+      },
+      "question_id": "fin-03",
+      "question_text": "How much should we save monthly?",
+    },
+    {
+      "category": "parenting",
+      "elevated": false,
+      "is_core": true,
+      "partner_a": {
+        "choice": "fully_on_board",
+        "compromise_text": null,
+      },
+      "partner_b": {
+        "choice": "open_to_discussing",
+        "compromise_text": "I could see us having 1",
+      },
+      "question_id": "par-01",
+      "question_text": "Do you want children?",
+    },
+  ],
+}
+`;

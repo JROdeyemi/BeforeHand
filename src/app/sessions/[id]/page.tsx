@@ -185,11 +185,18 @@ export default async function SessionPage({
             className="mt-2 text-3xl"
             style={{ fontFamily: "var(--font-display)" }}
           >
-            Session complete.
+            Your report is ready.
           </h1>
           <p className="mt-4 text-ink-soft">
-            The report is coming in a future phase.
+            Both of you have submitted. Your compatibility report is now
+            available.
           </p>
+          <Link
+            href={`/sessions/${id}/report`}
+            className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
+          >
+            View report &rarr;
+          </Link>
         </div>
       )}
     </main>

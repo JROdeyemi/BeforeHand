@@ -21,6 +21,7 @@ import {
   customQuestions,
   questions,
   reports,
+  spotlights,
   submissions,
   users,
 } from "@/db/schema";
@@ -248,6 +249,78 @@ export async function submitAnswers(
   }
 
   redirect(`/sessions/${sessionId}`);
+}
+
+export async function toggleSpotlight(
+  sessionId: string,
+  questionId: string | null,
+  customQuestionId: string | null,
+): Promise<{ error: string } | { ok: true; isSpotlit: boolean }> {
+  const authSession = await auth();
+  if (!authSession?.user?.id) return { error: "Not signed in." };
+  const userId = authSession.user.id;
+
+  let session;
+  try {
+    session = await getSessionForMember(db, sessionId, userId);
+  } catch (err) {
+    if (err instanceof NotSessionMemberError) return { error: "Session not found." };
+    throw err;
+  }
+
+  if (session.status !== "active") return { error: "Session is not active." };
+  if (await hasSubmitted(db, sessionId, userId)) {
+    return { error: "Cannot change spotlights after submission." };
+  }
+
+  // Exactly one question source
+  if ((questionId === null) === (customQuestionId === null)) {
+    return { error: "Exactly one of questionId or customQuestionId must be set." };
+  }
+
+  // Validate custom question belongs to this session (cross-session injection guard)
+  if (customQuestionId !== null) {
+    const [cq] = await db
+      .select()
+      .from(customQuestions)
+      .where(eq(customQuestions.id, customQuestionId));
+    if (!cq || cq.sessionId !== sessionId) {
+      return { error: "Custom question not found in this session." };
+    }
+  }
+
+  // Toggle: delete if exists, insert if not
+  const [existing] = await db
+    .select()
+    .from(spotlights)
+    .where(
+      questionId !== null
+        ? and(
+            eq(spotlights.sessionId, sessionId),
+            eq(spotlights.userId, userId),
+            eq(spotlights.questionId, questionId),
+          )
+        : and(
+            eq(spotlights.sessionId, sessionId),
+            eq(spotlights.userId, userId),
+            eq(spotlights.customQuestionId, customQuestionId!),
+          ),
+    );
+
+  if (existing) {
+    await db.delete(spotlights).where(eq(spotlights.id, existing.id));
+    revalidatePath(`/sessions/${sessionId}/answer`);
+    return { ok: true, isSpotlit: false };
+  }
+
+  await db.insert(spotlights).values({
+    sessionId,
+    userId,
+    questionId: questionId ?? null,
+    customQuestionId: customQuestionId ?? null,
+  });
+  revalidatePath(`/sessions/${sessionId}/answer`);
+  return { ok: true, isSpotlit: true };
 }
 
 export async function addCustomQuestion(

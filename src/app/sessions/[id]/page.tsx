@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   areAllCategoriesDesignated,
@@ -10,6 +9,7 @@ import {
   NotSessionMemberError,
 } from "@/db/guards";
 import { getInvitationForSession } from "@/db/queries";
+import { requireNamedUser } from "@/lib/require-named-user";
 
 export default async function SessionPage({
   params,
@@ -21,10 +21,7 @@ export default async function SessionPage({
   const { id } = await params;
   const { emailFailed } = await searchParams;
 
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect(`/signin?callbackUrl=/sessions/${id}`);
-  }
+  const { session: authSession } = await requireNamedUser(`/sessions/${id}`);
 
   let session;
   try {

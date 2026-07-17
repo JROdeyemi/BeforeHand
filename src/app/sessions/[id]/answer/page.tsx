@@ -1,7 +1,7 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
+import { requireNamedUser } from "@/lib/require-named-user";
 import {
   areAllCategoriesDesignated,
   getOwnProgressByCategory,
@@ -25,10 +25,7 @@ export default async function AnswerOverviewPage({
 }) {
   const { id } = await params;
 
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect(`/signin?callbackUrl=/sessions/${id}/answer`);
-  }
+  const { session: authSession } = await requireNamedUser(`/sessions/${id}/answer`);
   const userId = authSession.user.id;
 
   let session;

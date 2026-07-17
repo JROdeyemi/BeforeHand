@@ -21,11 +21,17 @@ export interface QuestionRecord {
   categorySlug: string; // "personal" sentinel for custom questions with null DB category
   text: string;
   displayOrder: number;
+  partnerView?: string | null;
 }
 
 export interface CategoryRecord {
   slug: string;
   displayOrder: number;
+}
+
+export interface SpotlightRef {
+  questionId?: string | null;
+  customQuestionId?: string | null;
 }
 
 export interface AnalysisInput {
@@ -39,6 +45,8 @@ export interface AnalysisInput {
   bankQuestions: QuestionRecord[]; // pre-filtered to session stage + context
   customQuestions: QuestionRecord[];
   categories: CategoryRecord[];
+  spotlightsA?: SpotlightRef[];
+  spotlightsB?: SpotlightRef[];
 }
 
 // ---------------------------------------------------------------------------
@@ -57,6 +65,7 @@ export interface DealbreakerFlagEntry {
   is_core: boolean;
   partner_a: PartnerAnswerEntry;
   partner_b: PartnerAnswerEntry;
+  partner_view_template?: string | null;
 }
 
 export interface TensionEntry {
@@ -67,6 +76,16 @@ export interface TensionEntry {
   elevated: boolean;
   partner_a: PartnerAnswerEntry;
   partner_b: PartnerAnswerEntry;
+  partner_view_template?: string | null;
+}
+
+export interface SpotlightEntry {
+  question_id: string;
+  question_text: string;
+  category: string;
+  is_custom: boolean;
+  partner_a: PartnerAnswerEntry | null;
+  partner_b: PartnerAnswerEntry | null;
 }
 
 export interface AlignedEntry {
@@ -119,6 +138,13 @@ export interface ReportPayload {
    * partner answered them (e.g. deactivated mid-session).
    */
   coverage_notes: CoverageNote[];
+  /** Questions each partner flagged as "this matters to me". Both partners'
+   *  spotlights are included; rendered at the top of the report. Optional
+   *  so existing payloads without this field render gracefully. */
+  spotlights?: {
+    partner_a: SpotlightEntry[];
+    partner_b: SpotlightEntry[];
+  };
 }
 
 // ---------------------------------------------------------------------------
@@ -222,6 +248,8 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
     bankQuestions,
     customQuestions,
     categories,
+    spotlightsA = [],
+    spotlightsB = [],
   } = input;
 
   // Answer lookup — keyed by questionId (bank) or customQuestionId (custom)
@@ -297,6 +325,7 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
           is_core: core,
           partner_a: entryA,
           partner_b: entryB,
+          partner_view_template: q.partnerView ?? null,
         });
       } else {
         customTensions.push({
@@ -307,6 +336,7 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
           elevated: cls === "TENSION_ELEVATED",
           partner_a: entryA,
           partner_b: entryB,
+          partner_view_template: q.partnerView ?? null,
         });
       }
       return;
@@ -330,6 +360,7 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
         is_core: core,
         partner_a: entryA,
         partner_b: entryB,
+        partner_view_template: q.partnerView ?? null,
       });
     } else {
       bankTensions.push({
@@ -340,6 +371,7 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
         elevated: cls === "TENSION_ELEVATED",
         partner_a: entryA,
         partner_b: entryB,
+        partner_view_template: q.partnerView ?? null,
       });
     }
 
@@ -376,6 +408,34 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
     bankTensions.length +
     bankFlags.length;
 
+  // Spotlight entries — both partners' "this matters to me" questions
+  const allQuestions = [...bankQuestions, ...customQuestions];
+  function buildSpotlightEntry(ref: SpotlightRef): SpotlightEntry | null {
+    const qid = ref.questionId ?? null;
+    const cqid = ref.customQuestionId ?? null;
+    const lookupKey = qid ?? cqid;
+    if (!lookupKey) return null;
+    const q = allQuestions.find((aq) => aq.id === lookupKey);
+    if (!q) return null;
+    const ansA = mapA.get(lookupKey);
+    const ansB = mapB.get(lookupKey);
+    return {
+      question_id: q.id,
+      question_text: q.text,
+      category: q.categorySlug,
+      is_custom: Boolean(cqid),
+      partner_a: ansA ? { choice: ansA.choice, compromise_text: ansA.compromiseText } : null,
+      partner_b: ansB ? { choice: ansB.choice, compromise_text: ansB.compromiseText } : null,
+    };
+  }
+
+  const spotlightEntriesA = spotlightsA
+    .map(buildSpotlightEntry)
+    .filter((e): e is SpotlightEntry => e !== null);
+  const spotlightEntriesB = spotlightsB
+    .map(buildSpotlightEntry)
+    .filter((e): e is SpotlightEntry => e !== null);
+
   return {
     generated_at: new Date().toISOString(),
     session: { stage: session.stage, cultural_context: session.culturalContextSlug },
@@ -404,5 +464,9 @@ export function analyzeSession(input: AnalysisInput): ReportPayload {
       shared_dealbreakers: customSharedDealbreakers,
     },
     coverage_notes: coverageNotes,
+    spotlights: {
+      partner_a: spotlightEntriesA,
+      partner_b: spotlightEntriesB,
+    },
   };
 }

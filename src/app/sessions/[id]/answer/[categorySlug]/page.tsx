@@ -1,9 +1,9 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   areAllCategoriesDesignated,
+  getMySpotlights,
   getOwnAnswers,
   getSessionForMember,
   hasSubmitted,
@@ -14,8 +14,9 @@ import {
   getApplicableQuestionsForCategory,
   getCustomQuestionsForSession,
 } from "@/db/queries";
+import { requireNamedUser } from "@/lib/require-named-user";
 import { AnswerCard } from "@/components/answer-card";
-import { saveAnswer } from "../actions";
+import { saveAnswer, toggleSpotlight } from "../actions";
 
 export default async function CategoryAnswerPage({
   params,
@@ -24,10 +25,9 @@ export default async function CategoryAnswerPage({
 }) {
   const { id, categorySlug } = await params;
 
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect(`/signin?callbackUrl=/sessions/${id}/answer/${categorySlug}`);
-  }
+  const { session: authSession } = await requireNamedUser(
+    `/sessions/${id}/answer/${categorySlug}`,
+  );
   const userId = authSession.user.id;
 
   let session;
@@ -54,7 +54,15 @@ export default async function CategoryAnswerPage({
     redirect(`/sessions/${id}/designate`);
   }
 
-  const submitted = await hasSubmitted(db, id, userId);
+  const [submitted, mySpotlights] = await Promise.all([
+    hasSubmitted(db, id, userId),
+    getMySpotlights(db, id, userId),
+  ]);
+  const spotlitQuestionIds = new Set(
+    mySpotlights
+      .map((s) => s.questionId ?? s.customQuestionId)
+      .filter(Boolean) as string[],
+  );
   const isPersonal = categorySlug === "personal";
 
   // Load questions and existing answers
@@ -172,6 +180,8 @@ export default async function CategoryAnswerPage({
             existing={item.existingAnswer}
             disabled={submitted}
             onSave={saveAnswer}
+            isSpotlit={spotlitQuestionIds.has(item.key)}
+            onToggleSpotlight={toggleSpotlight}
           />
         ))}
       </div>

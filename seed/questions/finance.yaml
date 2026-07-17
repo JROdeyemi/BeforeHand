@@ -4,11 +4,13 @@
 
 - id: fin-001
   text: "Once we're committed, all income becomes joint money — separate personal accounts end."
+  partner_view: "{name} sees all income as joint money once you're committed — separate accounts would end."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: fin-002
   text: "We will agree on a spending limit above which neither of us buys anything without talking to the other first."
+  partner_view: "{name} wants a spending limit you both agree on — anything above it means checking in first."
   stages: [dating, engaged, married]
   contexts: []
   active: true

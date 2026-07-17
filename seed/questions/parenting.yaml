@@ -2,11 +2,13 @@
 
 - id: par-001
   text: "I want children — this is not negotiable for me."
+  partner_view: "{name} wants children — this isn't negotiable for {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
 - id: par-002
   text: "We agree on a specific number of children before we marry, and we hold to it."
+  partner_view: "{name} wants to agree on a specific number of children before marriage, and hold to it."
   stages: [dating, engaged]
   contexts: []
   active: true

@@ -24,6 +24,7 @@ import {
   customQuestions,
   questions,
   reports,
+  spotlights,
   submissions,
 } from "./schema";
 
@@ -75,6 +76,25 @@ export async function getOwnAnswers(db: Db, sessionId: string, userId: string) {
     .select()
     .from(answers)
     .where(and(eq(answers.sessionId, sessionId), eq(answers.userId, userId)));
+}
+
+/**
+ * A user's own spotlights. Always safe: scoped to the requesting user.
+ * The other partner's spotlights are only readable via computeReportPayload
+ * (which requires report_ready status).
+ */
+export async function getMySpotlights(
+  db: Db,
+  sessionId: string,
+  userId: string,
+) {
+  await getSessionForMember(db, sessionId, userId);
+  return db
+    .select()
+    .from(spotlights)
+    .where(
+      and(eq(spotlights.sessionId, sessionId), eq(spotlights.userId, userId)),
+    );
 }
 
 /**
@@ -469,11 +489,18 @@ export async function computeReportPayload(
       (q.contexts.length === 0 || q.contexts.includes(session.culturalContextSlug)),
   );
 
-  // Fetch custom questions and categories
-  const [rawCustom, rawCategories] = await Promise.all([
-    db.select().from(customQuestions).where(eq(customQuestions.sessionId, sessionId)),
-    db.select().from(categories),
-  ]);
+  // Fetch custom questions, categories, and both partners' spotlights
+  const [rawCustom, rawCategories, rawSpotlightsA, rawSpotlightsB] =
+    await Promise.all([
+      db.select().from(customQuestions).where(eq(customQuestions.sessionId, sessionId)),
+      db.select().from(categories),
+      db.select().from(spotlights).where(
+        and(eq(spotlights.sessionId, sessionId), eq(spotlights.userId, createdByUserId)),
+      ),
+      db.select().from(spotlights).where(
+        and(eq(spotlights.sessionId, sessionId), eq(spotlights.userId, partnerUserId)),
+      ),
+    ]);
 
   return analyzeSession({
     session: { stage: session.relationshipStage, culturalContextSlug: session.culturalContextSlug },
@@ -498,6 +525,7 @@ export async function computeReportPayload(
       categorySlug: q.categorySlug,
       text: q.text,
       displayOrder: q.displayOrder,
+      partnerView: q.partnerView,
     })),
     customQuestions: rawCustom.map((q) => ({
       id: q.id,
@@ -508,6 +536,14 @@ export async function computeReportPayload(
     categories: rawCategories.map((c) => ({
       slug: c.slug,
       displayOrder: c.displayOrder,
+    })),
+    spotlightsA: rawSpotlightsA.map((s) => ({
+      questionId: s.questionId,
+      customQuestionId: s.customQuestionId,
+    })),
+    spotlightsB: rawSpotlightsB.map((s) => ({
+      questionId: s.questionId,
+      customQuestionId: s.customQuestionId,
     })),
   });
 }

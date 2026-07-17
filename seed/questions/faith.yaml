@@ -2,6 +2,7 @@
 
 - id: fai-001
   text: "We must share the same faith — not just respect each other's."
+  partner_view: "{name} holds that you must share the same faith — mutual respect alone isn't enough for {them}."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true

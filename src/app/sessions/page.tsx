@@ -1,8 +1,8 @@
 import Link from "next/link";
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
 import { getSessionsForUser } from "@/db/queries";
+import { requireNamedUser } from "@/lib/require-named-user";
 
 const STAGE_LABELS: Record<string, string> = {
   early_dating: "Early Dating",
@@ -26,10 +26,7 @@ function statusClass(status: string) {
 }
 
 export default async function SessionsPage() {
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect("/signin?callbackUrl=/sessions");
-  }
+  const { session: authSession } = await requireNamedUser("/sessions");
 
   const sessions = await getSessionsForUser(db, authSession.user.id);
   const nonClosed = sessions.filter((s) => s.status !== "closed");
@@ -60,7 +57,7 @@ export default async function SessionsPage() {
                 </span>
               </div>
               <p className="mt-1 text-sm text-ink-soft">
-                {session.partnerEmail ?? "No partner yet"}
+                {session.partnerName ?? session.partnerEmail ?? "No partner yet"}
               </p>
               <p className="mt-1 text-xs text-ink-soft/60">
                 Started{" "}

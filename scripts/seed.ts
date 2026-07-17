@@ -34,6 +34,7 @@ const questionSchema = z.array(
   z.object({
     id: z.string().regex(/^[a-z]+-\d{3,}$/, "id must look like fin-001"),
     text: z.string().min(10),
+    partner_view: z.string().optional(),
     stages: z
       .array(z.enum(["early_dating", "dating", "engaged", "married"]))
       .min(1),
@@ -88,6 +89,7 @@ async function main() {
           id: q.id,
           categorySlug,
           text: q.text,
+          partnerView: q.partner_view ?? null,
           stages: q.stages,
           contexts: q.contexts,
           displayOrder: i,
@@ -98,6 +100,7 @@ async function main() {
           set: {
             categorySlug,
             text: q.text,
+            partnerView: q.partner_view ?? null,
             stages: q.stages,
             contexts: q.contexts,
             displayOrder: i,

@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
-import { auth } from "@/auth";
 import { db } from "@/db";
+import { requireNamedUser } from "@/lib/require-named-user";
 import {
   areAllCategoriesDesignated,
   getOwnDesignations,
@@ -18,10 +18,7 @@ export default async function DesignatePage({
 }) {
   const { id } = await params;
 
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect(`/signin?callbackUrl=/sessions/${id}/designate`);
-  }
+  const { session: authSession } = await requireNamedUser(`/sessions/${id}/designate`);
   const userId = authSession.user.id;
 
   let session;

@@ -17,6 +17,12 @@ type SaveFn = (
   compromiseText: string | null,
 ) => Promise<{ error: string } | { ok: true }>;
 
+type ToggleSpotlightFn = (
+  sessionId: string,
+  questionId: string | null,
+  customQuestionId: string | null,
+) => Promise<{ error: string } | { ok: true; isSpotlit: boolean }>;
+
 type Props = {
   sessionId: string;
   questionId: string | null;
@@ -25,6 +31,8 @@ type Props = {
   existing: ExistingAnswer | null;
   disabled: boolean;
   onSave: SaveFn;
+  isSpotlit?: boolean;
+  onToggleSpotlight?: ToggleSpotlightFn;
 };
 
 const OPTIONS: { value: Choice; label: string; emoji: string }[] = [
@@ -45,6 +53,8 @@ export function AnswerCard({
   existing,
   disabled,
   onSave,
+  isSpotlit: initialSpotlit = false,
+  onToggleSpotlight,
 }: Props) {
   const [choice, setChoice] = useState<Choice | null>(existing?.choice ?? null);
   const [compromise, setCompromise] = useState(
@@ -54,6 +64,7 @@ export function AnswerCard({
     "idle" | "saving" | "saved" | "error"
   >("idle");
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
+  const [spotlit, setSpotlit] = useState(initialSpotlit);
   const [, startTransition] = useTransition();
   const debounceRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const savedTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -135,6 +146,18 @@ export function AnswerCard({
     }
   }
 
+  function handleSpotlightToggle() {
+    if (disabled || !onToggleSpotlight) return;
+    const next = !spotlit;
+    setSpotlit(next);
+    startTransition(async () => {
+      const result = await onToggleSpotlight(sessionId, questionId, customQuestionId);
+      if ("error" in result) {
+        setSpotlit(!next); // revert on error
+      }
+    });
+  }
+
   const isOpen = choice === "open_to_discussing";
 
   return (
@@ -197,6 +220,26 @@ export function AnswerCard({
           {saveStatus === "error" && errorMsg && (
             <span className="text-red-600">{errorMsg}</span>
           )}
+        </div>
+      )}
+
+      {/* Spotlight toggle */}
+      {!disabled && onToggleSpotlight && (
+        <div className="mt-3 border-t border-ink/5 pt-3">
+          <button
+            type="button"
+            onClick={handleSpotlightToggle}
+            aria-pressed={spotlit}
+            className={[
+              "flex items-center gap-1.5 text-xs transition-colors",
+              spotlit
+                ? "text-candle-deep font-medium"
+                : "text-ink-soft hover:text-ink",
+            ].join(" ")}
+          >
+            <span aria-hidden="true">{spotlit ? "★" : "☆"}</span>
+            <span>This matters to me</span>
+          </button>
         </div>
       )}
     </div>

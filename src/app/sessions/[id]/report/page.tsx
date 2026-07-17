@@ -1,6 +1,5 @@
 import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
-import { auth } from "@/auth";
 import { db } from "@/db";
 import {
   getReportForMember,
@@ -9,9 +8,11 @@ import {
   ReportNotReadyError,
 } from "@/db/guards";
 import { users } from "@/db/schema";
+import { requireNamedUser } from "@/lib/require-named-user";
 import type {
   DealbreakerFlagEntry,
   ReportPayload,
+  SpotlightEntry,
   TensionEntry,
 } from "@/lib/analysis";
 
@@ -22,10 +23,7 @@ export default async function ReportPage({
 }) {
   const { id } = await params;
 
-  const authSession = await auth();
-  if (!authSession?.user?.id) {
-    redirect(`/signin?callbackUrl=/sessions/${id}/report`);
-  }
+  const { session: authSession } = await requireNamedUser(`/sessions/${id}/report`);
   const userId = authSession.user.id;
 
   let report: Awaited<ReturnType<typeof getReportForMember>>;
@@ -82,12 +80,27 @@ export default async function ReportPage({
     dealbreaker: "This is a dealbreaker for me",
   };
 
+  function resolvePlaceholders(template: string, name: string): string {
+    return template
+      .replace(/\{name\}/g, name)
+      .replace(/\{their\}/g, "their")
+      .replace(/\{them\}/g, "them");
+  }
+
   const hasFlags = payload.dealbreaker_flags.length > 0;
   const hasTensions = payload.tensions.length > 0;
   const hasCustomFlags = payload.custom_questions.dealbreaker_flags.length > 0;
   const hasCustomTensions = payload.custom_questions.tensions.length > 0;
   const hasCoverage = payload.coverage_notes.length > 0;
   const heavyFlags = payload.summary.dealbreaker_flags >= 5;
+
+  const viewerSpotlights = viewerIsA
+    ? (payload.spotlights?.partner_a ?? [])
+    : (payload.spotlights?.partner_b ?? []);
+  const partnerSpotlights = viewerIsA
+    ? (payload.spotlights?.partner_b ?? [])
+    : (payload.spotlights?.partner_a ?? []);
+  const hasSpotlights = viewerSpotlights.length > 0 || partnerSpotlights.length > 0;
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
@@ -108,6 +121,64 @@ export default async function ReportPage({
           ? ` · ${payload.session.cultural_context}`
           : ""}
       </p>
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Section 0 — Spotlights                                              */}
+      {/* ------------------------------------------------------------------ */}
+      {hasSpotlights && (
+        <section className="mt-14">
+          <h2
+            className="text-xl text-ink"
+            style={{ fontFamily: "var(--font-display)" }}
+          >
+            Questions marked as important
+          </h2>
+          <p className="mt-2 text-sm text-ink-soft">
+            Questions either of you flagged as&nbsp;&ldquo;this matters to
+            me&rdquo; while answering.
+          </p>
+
+          {viewerSpotlights.length > 0 && (
+            <div className="mt-6">
+              <p className="mb-3 text-sm font-medium text-ink">
+                {viewerName} marked these
+              </p>
+              <div className="space-y-4">
+                {viewerSpotlights.map((entry) => (
+                  <SpotlightCard
+                    key={entry.question_id}
+                    entry={entry}
+                    viewerIsA={viewerIsA}
+                    viewerName={viewerName}
+                    partnerName={partnerName}
+                    choiceLabel={choiceLabel}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+
+          {partnerSpotlights.length > 0 && (
+            <div className={viewerSpotlights.length > 0 ? "mt-8" : "mt-6"}>
+              <p className="mb-3 text-sm font-medium text-ink">
+                {partnerName} marked these
+              </p>
+              <div className="space-y-4">
+                {partnerSpotlights.map((entry) => (
+                  <SpotlightCard
+                    key={entry.question_id}
+                    entry={entry}
+                    viewerIsA={viewerIsA}
+                    viewerName={viewerName}
+                    partnerName={partnerName}
+                    choiceLabel={choiceLabel}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </section>
+      )}
 
       {/* ------------------------------------------------------------------ */}
       {/* Section 1 — Dealbreaker Flags                                       */}
@@ -134,6 +205,11 @@ export default async function ReportPage({
                 partnerLabel={choiceLabel[partnerEntry(flag).choice]}
                 viewerName={viewerName}
                 partnerName={partnerName}
+                partnerViewText={
+                  flag.partner_view_template
+                    ? resolvePlaceholders(flag.partner_view_template, partnerName)
+                    : undefined
+                }
               />
             ))}
           </div>
@@ -176,6 +252,11 @@ export default async function ReportPage({
                 viewerName={viewerName}
                 partnerName={partnerName}
                 choiceLabel={choiceLabel}
+                partnerViewText={
+                  tension.partner_view_template
+                    ? resolvePlaceholders(tension.partner_view_template, partnerName)
+                    : undefined
+                }
               />
             ))}
           </div>
@@ -280,6 +361,7 @@ export default async function ReportPage({
                   viewerName={viewerName}
                   partnerName={partnerName}
                   choiceLabel={choiceLabel}
+                  partnerViewText={undefined}
                 />
               ))}
             </div>
@@ -350,12 +432,14 @@ function FlagCard({
   partnerLabel,
   viewerName,
   partnerName,
+  partnerViewText,
 }: {
   entry: DealbreakerFlagEntry;
   viewerLabel: string;
   partnerLabel: string;
   viewerName: string;
   partnerName: string;
+  partnerViewText?: string;
 }) {
   return (
     <div
@@ -376,10 +460,17 @@ function FlagCard({
           <span className="font-medium text-ink">You</span> said:{" "}
           {viewerLabel}
         </p>
-        <p className="text-ink-soft">
-          <span className="font-medium text-ink">{partnerName}</span> said:{" "}
-          {partnerLabel}
-        </p>
+        <div>
+          {partnerViewText && (
+            <p className="mb-1 text-xs italic text-ink-soft">
+              How {partnerName} sees it: &ldquo;{partnerViewText}&rdquo;
+            </p>
+          )}
+          <p className="text-ink-soft">
+            <span className="font-medium text-ink">{partnerName}</span> said:{" "}
+            {partnerLabel}
+          </p>
+        </div>
       </div>
     </div>
   );
@@ -394,6 +485,7 @@ function TensionCard({
   viewerName,
   partnerName,
   choiceLabel,
+  partnerViewText,
 }: {
   entry: TensionEntry;
   viewerChoice: string;
@@ -403,6 +495,7 @@ function TensionCard({
   viewerName: string;
   partnerName: string;
   choiceLabel: Record<string, string>;
+  partnerViewText?: string;
 }) {
   return (
     <div
@@ -438,6 +531,11 @@ function TensionCard({
           )}
         </div>
         <div>
+          {partnerViewText && (
+            <p className="mb-1 text-xs italic text-ink-soft">
+              How {partnerName} sees it: &ldquo;{partnerViewText}&rdquo;
+            </p>
+          )}
           <p className="text-ink-soft">
             <span className="font-medium text-ink">{partnerName}</span> said:{" "}
             {choiceLabel[partnerChoice]}
@@ -448,6 +546,48 @@ function TensionCard({
             </p>
           )}
         </div>
+      </div>
+    </div>
+  );
+}
+
+function SpotlightCard({
+  entry,
+  viewerIsA,
+  viewerName,
+  partnerName,
+  choiceLabel,
+}: {
+  entry: SpotlightEntry;
+  viewerIsA: boolean;
+  viewerName: string;
+  partnerName: string;
+  choiceLabel: Record<string, string>;
+}) {
+  const viewerAnswer = viewerIsA ? entry.partner_a : entry.partner_b;
+  const partnerAnswer = viewerIsA ? entry.partner_b : entry.partner_a;
+  return (
+    <div className="rounded-xl border border-ink/15 bg-white px-5 py-4">
+      <p className="font-medium text-ink">{entry.question_text}</p>
+      <div className="mt-3 space-y-2 text-sm">
+        <p className="text-ink-soft">
+          <span className="font-medium text-ink">You</span> said:{" "}
+          {viewerAnswer ? choiceLabel[viewerAnswer.choice] : <em>no answer</em>}
+        </p>
+        {viewerAnswer?.compromise_text && (
+          <p className="rounded-lg bg-ink/5 px-4 py-2.5 text-ink">
+            &ldquo;{viewerAnswer.compromise_text}&rdquo;
+          </p>
+        )}
+        <p className="text-ink-soft">
+          <span className="font-medium text-ink">{partnerName}</span> said:{" "}
+          {partnerAnswer ? choiceLabel[partnerAnswer.choice] : <em>no answer</em>}
+        </p>
+        {partnerAnswer?.compromise_text && (
+          <p className="rounded-lg bg-ink/5 px-4 py-2.5 text-ink">
+            &ldquo;{partnerAnswer.compromise_text}&rdquo;
+          </p>
+        )}
       </div>
     </div>
   );

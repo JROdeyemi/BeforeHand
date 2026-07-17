@@ -8,6 +8,13 @@
       "when": 1783027952795,
       "tag": "0000_yielding_nova",
       "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1784305811190,
+      "tag": "0001_special_selene",
+      "breakpoints": true
     }
   ]
 }

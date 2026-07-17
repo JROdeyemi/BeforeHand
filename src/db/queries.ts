@@ -117,12 +117,14 @@ export async function getSessionsForUser(db: Db, userId: string) {
           : session.createdByUserId;
 
       let partnerEmail: string | null = null;
+      let partnerName: string | null = null;
       if (partnerId) {
         const [partner] = await db
-          .select({ email: users.email })
+          .select({ email: users.email, name: users.name })
           .from(users)
           .where(eq(users.id, partnerId));
         partnerEmail = partner?.email ?? null;
+        partnerName = partner?.name ?? null;
       } else {
         const [inv] = await db
           .select({ invitedEmail: invitations.invitedEmail })
@@ -133,7 +135,7 @@ export async function getSessionsForUser(db: Db, userId: string) {
         partnerEmail = inv?.invitedEmail ?? null;
       }
 
-      return { ...session, partnerEmail };
+      return { ...session, partnerEmail, partnerName };
     }),
   );
 }

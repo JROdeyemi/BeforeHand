@@ -1,4 +1,6 @@
 # Extended Family & In-Laws — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: ext-001
   text: "Once we marry, our loyalty is to each other first — before parents, before siblings, every time."
@@ -12,6 +14,7 @@
   active: true
 - id: ext-003
   text: "A parent or in-law living with us permanently at some point is part of the plan."
+  partner_view: "{name} plans for a parent or in-law to live with you permanently at some point."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -27,11 +30,13 @@
   active: true
 - id: ext-006
   text: "My parents' opinion can veto a major decision of ours — where we live, a job move, a big purchase."
+  partner_view: "{name} holds that {their} parents' opinion can veto a major decision of yours — where you live, a job move, a big purchase."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-007
   text: "If my family never fully accepts my partner, I will marry them anyway."
+  partner_view: "If {name}'s family never fully accepts you, {they} will marry you anyway."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true
@@ -47,21 +52,25 @@
   active: true
 - id: ext-010
   text: "My partner is expected to attend my family's functions — weddings, burials, meetings — even when it costs time and money."
+  partner_view: "{name} expects you to attend {their} family's functions — weddings, burials, meetings — even when it costs time and money."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-011
   text: "When my partner and my mother clash, I will take my partner's side in front of her — and handle my mother privately."
+  partner_view: "When you and {name}'s mother clash, {name} will take your side in front of her — and handle {their} mother privately."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-012
   text: "An in-law who disrespects me should be confronted by their own child — my partner — not by me."
+  partner_view: "{name} expects that if one of your relatives disrespects {them}, you do the confronting — not {name}."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-013
   text: "How much we give my family financially is decided by both of us — my family does not get to set the amount."
+  partner_view: "{name} holds that how much you give {their} family is decided by both of you — {their} family does not get to set the amount."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -72,16 +81,19 @@
   active: true
 - id: ext-015
   text: "Living in the same compound or on the same street as my family is a plan I'd welcome."
+  partner_view: "{name} would welcome living in the same compound — or on the same street — as {their} family."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-016
   text: "My siblings' problems — school fees, rent, bail-outs — are our problems."
+  partner_view: "To {name}, {their} siblings' problems — school fees, rent, bail-outs — are your problems as a couple."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: ext-017
   text: "If a family member disrespects my partner repeatedly, I will cut contact — family or not."
+  partner_view: "If a member of {name}'s family disrespects you repeatedly, {name} will cut contact — family or not."
   stages: [dating, engaged, married]
   contexts: []
   active: true

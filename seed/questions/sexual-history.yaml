@@ -1,4 +1,6 @@
 # Sexual History — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: sxh-001
   text: "Before we marry, we both get tested — full STI panel — and share the results with each other."
@@ -7,26 +9,31 @@
   active: true
 - id: sxh-002
   text: "I have a right to know the broad truth of my partner's sexual past — not every detail, but nothing that rewrites who I thought I was marrying."
+  partner_view: "{name} holds that {they} have a right to the broad truth of your sexual past — not every detail, but nothing that rewrites who {they} thought {they} were marrying."
   stages: [dating, engaged]
   contexts: []
   active: true
 - id: sxh-003
   text: "The number of past partners is something I'm entitled to ask — and answer honestly."
+  partner_view: "{name} feels entitled to ask the number of your past partners — and to answer honestly about {their} own."
   stages: [dating, engaged]
   contexts: []
   active: true
 - id: sxh-004
   text: "My partner's past is the past — it will not be brought up in arguments, ever."
+  partner_view: "{name} holds that your past is the past — it will never be brought up in arguments."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: sxh-005
   text: "A serious past relationship my partner still hasn't told me about would count as a lie, not an omission."
+  partner_view: "To {name}, a serious past relationship you still haven't told {them} about would count as a lie — not an omission."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: sxh-006
   text: "If there is a child out there from my partner's past — even one they only suspect — I must know before we marry."
+  partner_view: "If there is a child out there from your past — even one you only suspect — {name} must know before you marry."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true
@@ -42,11 +49,13 @@
   active: true
 - id: sxh-009
   text: "If my partner was unfaithful in a past relationship, I need to know — it tells me something I'm entitled to weigh."
+  partner_view: "If you were unfaithful in a past relationship, {name} needs to know — to {them}, it is something {they} are entitled to weigh."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true
 - id: sxh-010
   text: "Past sexual trauma or abuse is my partner's story to tell in their own time — I will not demand it, and it changes nothing about how I see them."
+  partner_view: "{name} holds that any past trauma is your story to tell in your own time — {they} will not demand it, and it changes nothing about how {they} see you."
   stages: [dating, engaged, married]
   contexts: []
   active: true

@@ -1,4 +1,6 @@
 # Sexuality — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: sex-001
   text: "We wait until marriage for sex — and that decision holds no matter how long the engagement runs."
@@ -27,6 +29,7 @@
   active: true
 - id: sex-006
   text: "Roughly matching desire matters to me — a large, permanent gap in how often we want sex would be a serious problem."
+  partner_view: "Roughly matching desire matters to {name} — a large, permanent gap in how often you each want sex would be a serious problem for {them}."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -42,16 +45,19 @@
   active: true
 - id: sex-009
   text: "Fidelity means more than not sleeping with someone else — emotional affairs and secret flirtations count as cheating."
+  partner_view: "To {name}, fidelity means more than not sleeping with someone else — emotional affairs and secret flirtations count as cheating."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
 - id: sex-010
   text: "Infidelity ends this marriage — no second chances, no exceptions."
+  partner_view: "For {name}, infidelity ends this marriage — no second chances, no exceptions."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: sex-011
   text: "I expect us to keep dating each other — romance, effort, attraction — for decades, not just until the wedding."
+  partner_view: "{name} expects you two to keep dating each other — romance, effort, attraction — for decades, not just until the wedding."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -62,6 +68,7 @@
   active: true
 - id: sex-013
   text: "There are things I consider off-limits in bed, and my partner accepting those limits — permanently — is non-negotiable."
+  partner_view: "{name} has things {they} consider off-limits in bed — and your accepting those limits, permanently, is non-negotiable for {them}."
   stages: [engaged, married]
   contexts: []
   active: true

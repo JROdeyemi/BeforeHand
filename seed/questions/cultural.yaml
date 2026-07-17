@@ -1,7 +1,10 @@
 # Tribal & Cultural Expectations — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: cul-001
   text: "Marrying outside my tribe or ethnic group is fully on the table for me — including against my family's wishes."
+  partner_view: "Marrying outside {their} tribe or ethnic group is fully on the table for {name} — including against {their} family's wishes."
   stages: [early_dating, dating]
   contexts: []
   active: true
@@ -12,16 +15,19 @@
   active: true
 - id: cul-003
   text: "Whatever my family asks for in the traditional process, the demands must stay within what we two agree is reasonable — and I will push back on my own family if they don't."
+  partner_view: "{name} commits that whatever {their} family asks for in the traditional process must stay within what you two agree is reasonable — and {they} will push back on {their} own family if it doesn't."
   stages: [dating, engaged]
   contexts: []
   active: true
 - id: cul-004
   text: "Our children will speak my mother tongue — not just English — and I expect my partner's support in making that happen."
+  partner_view: "{name} wants your children to speak {their} mother tongue — not just English — and expects your support in making that happen."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: cul-005
   text: "Our children's names will include names from my culture, chosen through my family's naming traditions."
+  partner_view: "{name} wants your children's names to include names from {their} culture, chosen through {their} family's naming traditions."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -42,6 +48,7 @@
   active: true
 - id: cul-009
   text: "Taking a chieftaincy title, family headship, or a traditional role someday — with the duties and costs that come with it — is part of the life I expect."
+  partner_view: "Taking a chieftaincy title, family headship, or a traditional role someday — with the duties and costs that come with it — is part of the life {name} expects."
   stages: [engaged, married]
   contexts: []
   active: true
@@ -52,6 +59,7 @@
   active: true
 - id: cul-011
   text: "How and where each of us is buried will follow our customs — and I need my partner to understand that my family will have a say in mine."
+  partner_view: "{name} holds that how and where each of you is buried will follow your customs — and needs you to understand that {their} family will have a say in {theirs}."
   stages: [engaged, married]
   contexts: []
   active: true
@@ -62,6 +70,7 @@
   active: true
 - id: cul-013
   text: "My partner is expected to learn my culture — greetings, food, respect customs — well enough to be at home among my people, not a permanent guest."
+  partner_view: "{name} expects you to learn {their} culture — greetings, food, respect customs — well enough to be at home among {their} people, not a permanent guest."
   stages: [dating, engaged, married]
   contexts: []
   active: true

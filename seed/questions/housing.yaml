@@ -1,4 +1,6 @@
 # Housing — drafted for founder review. All active: false until sign-off.
+# partner_view rule: only first-person questions get partner_view;
+# couple-voice ("We will...") questions never do.
 
 - id: hou-001
   text: "We start our marriage in our own place — not with either family, not even briefly."
@@ -7,6 +9,7 @@
   active: true
 - id: hou-002
   text: "Renting long-term is fine — owning a home is not a requirement for the life I want."
+  partner_view: "{name} is fine renting long-term — owning a home is not a requirement for the life {they} want."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -22,11 +25,13 @@
   active: true
 - id: hou-005
   text: "Building a house in my hometown — even if we never live there — is an obligation I intend to fulfil."
+  partner_view: "Building a house in {name}'s hometown — even if you never live there — is an obligation {they} intend to fulfil."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: hou-006
   text: "City life is the life — I could not settle in a small town or quiet suburb long-term."
+  partner_view: "For {name}, city life is the life — {they} could not settle in a small town or quiet suburb long-term."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -37,11 +42,13 @@
   active: true
 - id: hou-008
   text: "Emigrating permanently — building our life in another country — is part of my plan."
+  partner_view: "Emigrating permanently — building your life in another country — is part of {name}'s plan."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
 - id: hou-009
   text: "I would move to my partner's country or city and start over — leaving my career network and people behind."
+  partner_view: "{name} would move to your country or city and start over — leaving {their} career network and people behind."
   stages: [dating, engaged]
   contexts: []
   active: true
@@ -72,6 +79,7 @@
   active: true
 - id: hou-015
   text: "Moving frequently — new cities, new countries, every few years — sounds like a good life to me, not an unstable one."
+  partner_view: "Moving frequently — new cities, new countries, every few years — sounds like a good life to {name}, not an unstable one."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true

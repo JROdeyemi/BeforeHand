@@ -85,7 +85,8 @@ export default async function ReportPage({
       .replace(/\{name\}/g, name)
       .replace(/\{their\}/g, "their")
       .replace(/\{them\}/g, "them")
-      .replace(/\{they\}/g, "they");
+      .replace(/\{they\}/g, "they")
+      .replace(/\{theirs\}/g, "theirs");
   }
 
   const hasFlags = payload.dealbreaker_flags.length > 0;

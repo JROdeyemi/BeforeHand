@@ -14,7 +14,8 @@
  * unsafe query.
  */
 import { and, count, eq, inArray, isNotNull } from "drizzle-orm";
-import type { Db } from "./index";
+import type { Db, DbOrTx } from "./index";
+import { analyzeSession } from "@/lib/analysis";
 import {
   answers,
   categories,
@@ -106,6 +107,8 @@ export async function getPartnerProgressPercent(
 /**
  * The report — the only cross-partner read that exists, and only when
  * the session-level status says both have submitted.
+ *
+ * Self-heals if the payload is {} (the one Phase-4 placeholder row).
  */
 export async function getReportForMember(
   db: Db,
@@ -121,6 +124,16 @@ export async function getReportForMember(
     .from(reports)
     .where(eq(reports.sessionId, sessionId));
   if (!report) throw new ReportNotReadyError();
+
+  if (isEmptyPayload(report.payload)) {
+    const payload = await computeReportPayload(db, sessionId, session);
+    await db
+      .update(reports)
+      .set({ payload })
+      .where(eq(reports.sessionId, sessionId));
+    return { ...report, payload };
+  }
+
   return report;
 }
 
@@ -387,4 +400,114 @@ async function countAnsweredApplicable(
   }
 
   return answeredBank + answeredCustom;
+}
+
+// ---------------------------------------------------------------------------
+// Report generation — the one cross-partner read outside getReportForMember
+// ---------------------------------------------------------------------------
+
+function isEmptyPayload(payload: unknown): boolean {
+  return (
+    typeof payload === "object" &&
+    payload !== null &&
+    Object.keys(payload).length === 0
+  );
+}
+
+/**
+ * Fetch both partners' answers, designations, and applicable questions, then
+ * run the pure analysis engine and return the payload.
+ *
+ * ONLY safe to call when:
+ * (a) inside the second-submission transaction (subCount === 2), or
+ * (b) session.status === "report_ready" (self-healing path in getReportForMember).
+ *
+ * Accepts DbOrTx so it works both inside a transaction (tx) and outside (db).
+ */
+export async function computeReportPayload(
+  db: DbOrTx,
+  sessionId: string,
+  session: SessionRow,
+) {
+  const { createdByUserId, partnerUserId } = session;
+  if (!partnerUserId) throw new Error("Session has no partner — cannot compute report.");
+
+  // Fetch both partners' answers (the one cross-partner read allowed here)
+  const [rawAnswersA, rawAnswersB] = await Promise.all([
+    db.select().from(answers).where(
+      and(eq(answers.sessionId, sessionId), eq(answers.userId, createdByUserId)),
+    ),
+    db.select().from(answers).where(
+      and(eq(answers.sessionId, sessionId), eq(answers.userId, partnerUserId)),
+    ),
+  ]);
+
+  // Fetch both partners' designations
+  const [rawDesigA, rawDesigB] = await Promise.all([
+    db.select().from(categoryDesignations).where(
+      and(
+        eq(categoryDesignations.sessionId, sessionId),
+        eq(categoryDesignations.userId, createdByUserId),
+      ),
+    ),
+    db.select().from(categoryDesignations).where(
+      and(
+        eq(categoryDesignations.sessionId, sessionId),
+        eq(categoryDesignations.userId, partnerUserId),
+      ),
+    ),
+  ]);
+
+  // Fetch applicable bank questions (active, matching stage + context)
+  const allBank = await db
+    .select()
+    .from(questions)
+    .where(eq(questions.isActive, true));
+  const applicableBank = allBank.filter(
+    (q) =>
+      q.stages.includes(session.relationshipStage) &&
+      (q.contexts.length === 0 || q.contexts.includes(session.culturalContextSlug)),
+  );
+
+  // Fetch custom questions and categories
+  const [rawCustom, rawCategories] = await Promise.all([
+    db.select().from(customQuestions).where(eq(customQuestions.sessionId, sessionId)),
+    db.select().from(categories),
+  ]);
+
+  return analyzeSession({
+    session: { stage: session.relationshipStage, culturalContextSlug: session.culturalContextSlug },
+    partnerAUserId: createdByUserId,
+    partnerBUserId: partnerUserId,
+    answersA: rawAnswersA.map((a) => ({
+      questionId: a.questionId,
+      customQuestionId: a.customQuestionId,
+      choice: a.choice,
+      compromiseText: a.compromiseText,
+    })),
+    answersB: rawAnswersB.map((b) => ({
+      questionId: b.questionId,
+      customQuestionId: b.customQuestionId,
+      choice: b.choice,
+      compromiseText: b.compromiseText,
+    })),
+    designationsA: Object.fromEntries(rawDesigA.map((d) => [d.categorySlug, d.designation])),
+    designationsB: Object.fromEntries(rawDesigB.map((d) => [d.categorySlug, d.designation])),
+    bankQuestions: applicableBank.map((q) => ({
+      id: q.id,
+      categorySlug: q.categorySlug,
+      text: q.text,
+      displayOrder: q.displayOrder,
+    })),
+    customQuestions: rawCustom.map((q) => ({
+      id: q.id,
+      categorySlug: q.categorySlug ?? "personal",
+      text: q.text,
+      displayOrder: 0,
+    })),
+    categories: rawCategories.map((c) => ({
+      slug: c.slug,
+      displayOrder: c.displayOrder,
+    })),
+  });
 }

@@ -2,6 +2,8 @@ import { redirect } from "next/navigation";
 import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
+  getActiveShareRequest,
+  getLastCompletedShare,
   getReportForMember,
   getSessionForMember,
   NotSessionMemberError,
@@ -15,6 +17,10 @@ import type {
   SpotlightEntry,
   TensionEntry,
 } from "@/lib/analysis";
+import {
+  ShareConsentSection,
+  type ShareStateProps,
+} from "@/components/share-consent-section";
 
 export default async function ReportPage({
   params,
@@ -51,15 +57,47 @@ export default async function ReportPage({
       ? session.partnerUserId
       : session.createdByUserId;
 
-  const [viewerUser, partnerUser] = await Promise.all([
+  const [viewerUser, partnerUser, shareData, lastCompleted] = await Promise.all([
     db.select().from(users).where(eq(users.id, userId)).then((r) => r[0]),
     partnerUserId
       ? db.select().from(users).where(eq(users.id, partnerUserId)).then((r) => r[0])
       : Promise.resolve(undefined),
+    getActiveShareRequest(db, id, userId),
+    getLastCompletedShare(db, id, userId),
   ]);
 
   const viewerName = viewerUser?.name ?? viewerUser?.email ?? "You";
   const partnerName = partnerUser?.name ?? partnerUser?.email ?? "Your partner";
+  const partnerFirstName = partnerName.split(" ")[0];
+  const viewerFirstName = viewerName.split(" ")[0];
+
+  let shareState: ShareStateProps;
+  if (shareData) {
+    const viewerApproved = shareData.approvals.some((a) => a.userId === userId);
+    if (viewerApproved) {
+      shareState = {
+        kind: "pending_mine",
+        shareConsentId: shareData.request.id,
+        counselorEmail: shareData.request.counselorEmail,
+        partnerFirstName,
+      };
+    } else {
+      shareState = {
+        kind: "pending_theirs",
+        shareConsentId: shareData.request.id,
+        counselorEmail: shareData.request.counselorEmail,
+        requesterFirstName: partnerFirstName,
+      };
+    }
+  } else if (lastCompleted?.sharedAt) {
+    shareState = {
+      kind: "completed",
+      counselorEmail: lastCompleted.counselorEmail,
+      sharedAt: lastCompleted.sharedAt.toISOString(),
+    };
+  } else {
+    shareState = { kind: "none" };
+  }
 
   // payload is JSONB — cast it; the shape was written by analyzeSession
   const payload = report.payload as ReportPayload;
@@ -219,8 +257,7 @@ export default async function ReportPage({
           {heavyFlags && (
             <p className="mt-8 rounded-xl border border-candle/30 bg-candle/10 px-5 py-4 text-sm text-ink">
               Many couples find it helpful to work through results like these
-              with a counselor. When you&rsquo;re both ready, you&rsquo;ll be
-              able to share this report with a counselor of your choice.
+              with a counselor.
             </p>
           )}
         </section>
@@ -414,6 +451,13 @@ export default async function ReportPage({
           </p>
         </section>
       )}
+
+      {/* ------------------------------------------------------------------ */}
+      {/* Counselor sharing                                                   */}
+      {/* ------------------------------------------------------------------ */}
+      <section className="mt-14 border-t border-ink/10 pt-10">
+        <ShareConsentSection sessionId={id} initialState={shareState} />
+      </section>
 
       <div className="mt-16 border-t border-ink/10 pt-10 text-center text-sm text-ink-soft">
         <p>Beforehand doesn&rsquo;t tell you what to do.</p>

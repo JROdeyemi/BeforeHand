@@ -4,6 +4,8 @@ import { eq } from "drizzle-orm";
 import { db } from "@/db";
 import {
   areAllCategoriesDesignated,
+  getActiveShareRequest,
+  getLastCompletedShare,
   getLastNudgeSentAt,
   getOwnProgressPercent,
   getPartnerProgressPercent,
@@ -214,29 +216,61 @@ export default async function SessionPage({
         );
       })()}
 
-      {(session.status === "report_ready" || session.status === "closed") && (
-        <div>
-          <p className="text-sm uppercase tracking-[0.2em] text-candle">
-            Session
-          </p>
-          <h1
-            className="mt-2 text-3xl"
-            style={{ fontFamily: "var(--font-display)" }}
-          >
-            Your report is ready.
-          </h1>
-          <p className="mt-4 text-ink-soft">
-            Both of you have submitted. Your compatibility report is now
-            available.
-          </p>
-          <Link
-            href={`/sessions/${id}/report`}
-            className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
-          >
-            View report &rarr;
-          </Link>
-        </div>
-      )}
+      {(session.status === "report_ready" || session.status === "closed") && await (async () => {
+        const userId = authSession.user.id;
+        const [shareData, lastCompleted] = await Promise.all([
+          getActiveShareRequest(db, id, userId),
+          getLastCompletedShare(db, id, userId),
+        ]);
+
+        const partnerId =
+          session.createdByUserId === userId
+            ? session.partnerUserId
+            : session.createdByUserId;
+        const partnerUser = partnerId
+          ? await db.select({ name: users.name, email: users.email }).from(users).where(eq(users.id, partnerId)).then((r) => r[0] ?? null)
+          : null;
+        const partnerFirstName = (partnerUser?.name ?? partnerUser?.email?.split("@")[0] ?? "Your partner").split(" ")[0];
+
+        return (
+          <div>
+            <p className="text-sm uppercase tracking-[0.2em] text-candle">
+              Session
+            </p>
+            <h1
+              className="mt-2 text-3xl"
+              style={{ fontFamily: "var(--font-display)" }}
+            >
+              Your report is ready.
+            </h1>
+            <p className="mt-4 text-ink-soft">
+              Both of you have submitted. Your compatibility report is now
+              available.
+            </p>
+            <Link
+              href={`/sessions/${id}/report`}
+              className="mt-8 inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
+            >
+              View report &rarr;
+            </Link>
+            {shareData && shareData.request.requestedByUserId === userId && (
+              <p className="mt-4 text-sm text-ink-soft">
+                Waiting for {partnerFirstName} to approve a counselor share.
+              </p>
+            )}
+            {shareData && shareData.request.requestedByUserId !== userId && (
+              <p className="mt-4 text-sm text-ink-soft">
+                {partnerFirstName} requested a counselor share.
+              </p>
+            )}
+            {!shareData && lastCompleted?.sharedAt && (
+              <p className="mt-4 text-sm text-ink-soft">
+                Report shared with {lastCompleted.counselorEmail}.
+              </p>
+            )}
+          </div>
+        );
+      })()}
     </main>
   );
 }

@@ -13,7 +13,7 @@
  * "getAnswersForSession" — the type system shouldn't even offer the
  * unsafe query.
  */
-import { and, count, desc, eq, inArray, isNotNull } from "drizzle-orm";
+import { and, count, desc, eq, inArray, isNotNull, isNull } from "drizzle-orm";
 import type { Db, DbOrTx } from "./index";
 import { analyzeSession } from "@/lib/analysis";
 import {
@@ -24,6 +24,8 @@ import {
   customQuestions,
   nudges,
   questions,
+  shareConsentApprovals,
+  shareConsents,
   reports,
   spotlights,
   submissions,
@@ -386,6 +388,53 @@ export async function canSubmit(
   if (answered < total) throw new SubmitNotReadyError(total - answered);
   if (total === 0) throw new SubmitNotReadyError(0);
   return true;
+}
+
+/**
+ * The active (not yet executed) share request for this session, plus all
+ * approval rows collected so far. Returns null if no pending request exists.
+ *
+ * "Active" means sharedAt IS NULL — the request was created but the share
+ * has not been sent yet.
+ */
+export async function getActiveShareRequest(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<{
+  request: typeof shareConsents.$inferSelect;
+  approvals: (typeof shareConsentApprovals.$inferSelect)[];
+} | null> {
+  await getSessionForMember(db, sessionId, userId);
+  const [request] = await db
+    .select()
+    .from(shareConsents)
+    .where(and(eq(shareConsents.sessionId, sessionId), isNull(shareConsents.sharedAt)));
+  if (!request) return null;
+  const approvals = await db
+    .select()
+    .from(shareConsentApprovals)
+    .where(eq(shareConsentApprovals.shareConsentId, request.id));
+  return { request, approvals };
+}
+
+/**
+ * The most recently executed share for this session (sharedAt IS NOT NULL),
+ * or null if the report has never been shared with a counselor.
+ */
+export async function getLastCompletedShare(
+  db: Db,
+  sessionId: string,
+  userId: string,
+): Promise<typeof shareConsents.$inferSelect | null> {
+  await getSessionForMember(db, sessionId, userId);
+  const [row] = await db
+    .select()
+    .from(shareConsents)
+    .where(and(eq(shareConsents.sessionId, sessionId), isNotNull(shareConsents.sharedAt)))
+    .orderBy(desc(shareConsents.sharedAt))
+    .limit(1);
+  return row ?? null;
 }
 
 // ---------------------------------------------------------------------------

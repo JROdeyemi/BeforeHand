@@ -50,8 +50,7 @@
   contexts: []
   active: true
 - id: sex-010
-  text: "Infidelity ends this marriage — no second chances, no exceptions."
-  partner_view: "For {name}, infidelity ends this marriage — no second chances, no exceptions."
+  text: "We treat infidelity as ending this marriage — no second chances, no exceptions."
   stages: [dating, engaged, married]
   contexts: []
   active: true

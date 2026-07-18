@@ -3,7 +3,7 @@
 # couple-voice ("We will...") questions never do.
 
 - id: con-001
-  text: "We do not go silent on each other — the silent treatment, days of cold distance, is not an acceptable way to handle a fight."
+  text: "We don't go silent on each other — no silent treatment, no days of cold distance, as a way of handling a fight."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true
@@ -19,14 +19,12 @@
   contexts: []
   active: true
 - id: con-004
-  text: "Some things end the conversation permanently the first time they happen — insults about my family, mocking my body, throwing my past at me."
-  partner_view: "Some things end the conversation permanently for {name} the first time they happen — insults about {their} family, mocking {their} body, throwing {their} past at {them}."
+  text: "Some lines, once crossed even once — insults about family, mocking my body, weaponizing my past — permanently change what I can feel for someone. We treat those lines as real."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: con-005
-  text: "Walking out mid-argument — leaving the house, driving off — is something I will not accept as a pattern."
-  partner_view: "Walking out mid-argument — leaving the house, driving off — is something {name} will not accept as a pattern."
+  text: "We don't walk out mid-argument — leaving the house or driving off is not how either of us exits a fight."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -53,12 +51,12 @@
   contexts: []
   active: true
 - id: con-010
-  text: "Bringing up old settled fights as ammunition in new ones is a line — settled means settled."
+  text: "Settled means settled — we don't reopen old resolved fights as ammunition in new ones."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: con-011
-  text: "Threatening the relationship — 'maybe we should just end this' — is never said in anger unless it is meant."
+  text: "We never threaten the relationship — 'maybe we should just end this' — in anger. If it's said, it's meant."
   stages: [dating, engaged, married]
   contexts: []
   active: true
@@ -84,8 +82,7 @@
   contexts: []
   active: true
 - id: con-016
-  text: "Any physical expression of anger toward me — grabbing, shoving, blocking my exit, breaking things — ends this relationship the first time."
-  partner_view: "Any physical expression of anger toward {name} — grabbing, shoving, blocking {their} exit, breaking things — ends this relationship the first time."
+  text: "We treat any physical expression of anger — grabbing, shoving, blocking an exit, breaking things — as ending this relationship the first time it happens."
   stages: [early_dating, dating, engaged, married]
   contexts: []
   active: true

@@ -41,8 +41,7 @@
   contexts: []
   active: true
 - id: foo-008
-  text: "Comments about my weight or what's on my plate are off-limits — food is not a supervision zone in this marriage."
-  partner_view: "Comments about {name}'s weight or what's on {their} plate are off-limits — food is not a supervision zone for {them}."
+  text: "We keep comments about each other's weight or plate off the table — food is not a supervision zone in this marriage."
   stages: [dating, engaged, married]
   contexts: []
   active: true

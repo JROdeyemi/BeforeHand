@@ -33,7 +33,7 @@
   active: true
 - id: sxh-006
   text: "If there is a child out there from my partner's past — even one they only suspect — I must know before we marry."
-  partner_view: "If there is a child out there from your past — even one you only suspect — {name} must know before you marry."
+  partner_view: "{name} must know before you marry if there is a child out there from your past — even one you only suspect."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true
@@ -49,7 +49,7 @@
   active: true
 - id: sxh-009
   text: "If my partner was unfaithful in a past relationship, I need to know — it tells me something I'm entitled to weigh."
-  partner_view: "If you were unfaithful in a past relationship, {name} needs to know — to {them}, it is something {they} are entitled to weigh."
+  partner_view: "{name} needs to know if you were unfaithful in a past relationship — to {them}, that's something {they} are entitled to weigh."
   stages: [early_dating, dating, engaged]
   contexts: []
   active: true
@@ -60,12 +60,29 @@
   contexts: []
   active: true
 - id: sxh-011
-  text: "Whatever is disclosed between us about the past stays in the vault — it is never repeated to family or friends, and never used as a weapon."
+  text: "We treat what's disclosed about the past as vault-sealed — never repeated to family or friends, never used as a weapon."
   stages: [dating, engaged, married]
   contexts: []
   active: true
 - id: sxh-012
   text: "Once we're married, the questions stop — no re-interrogating the past every time insecurity flares."
   stages: [engaged, married]
+  contexts: []
+  active: true
+- id: sxh-013
+  text: "Serious past relationships — engagements, long partnerships, anyone I almost married — are things my partner should hear about from me, not from other people."
+  partner_view: "{name} holds that {their} serious past relationships — engagements, long partnerships, anyone {they} almost married — are things you should hear from {them}, not from other people."
+  stages: [early_dating, dating, engaged]
+  contexts: []
+  active: true
+- id: sxh-014
+  text: "If an ex reaches out to me, my partner hears about it from me, unprompted."
+  partner_view: "{name} commits that if an ex reaches out to {them}, you hear about it from {them}, unprompted."
+  stages: [early_dating, dating, engaged, married]
+  contexts: []
+  active: true
+- id: sxh-015
+  text: "Money entanglements from the past — debts to an ex, shared property, anything unfinished — get fully disclosed before we marry."
+  stages: [dating, engaged]
   contexts: []
   active: true

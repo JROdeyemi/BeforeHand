@@ -1,25 +1,37 @@
 # The 12 launch categories. Order = display order.
 - slug: finance
   name: Finance
+  description: "Money in and money out — joint accounts, spending limits, debt, supporting family, and who decides."
 - slug: parenting
   name: Parenting
+  description: "Whether children are part of the plan, how many, and how they'll be raised, disciplined, and educated."
 - slug: sexuality
   name: Sexuality
+  description: "Intimacy in your future together — expectations, boundaries, fidelity, and how you'll handle it when it gets hard."
 - slug: faith
   name: Faith & Spirituality
+  description: "What you each believe, how you practice, and how much say faith has in your home and decisions."
 - slug: chores
   name: Chores & Home Life
+  description: "Who does what at home — cooking, cleaning, standards, help, and the invisible work of running a household."
 - slug: career
   name: Career & Ambition
+  description: "Ambition, relocation, whose career bends when they collide, and what work is allowed to cost your life together."
 - slug: extended-family
   name: Extended Family & In-Laws
+  description: "Parents, in-laws, and siblings — visits, money, influence, and where your couple ends and family begins."
 - slug: housing
   name: Housing
+  description: "Where you'll live and how — renting or owning, city or quiet, near family or far, and obligations back home."
 - slug: conflict
   name: Stress & Conflict Style
+  description: "How you fight and how you repair — silence, shouting, space, apologies, and lines that must never be crossed."
 - slug: sexual-history
-  name: Sexual History
+  name: Past Relationships
+  description: "The past and what it's owed each other — honesty about what came before, and leaving it there once it's told."
 - slug: food
   name: Food & Kitchen
+  description: "The daily table — who cooks, what's served, traditions and restrictions, and how food is treated in your home."
 - slug: cultural
   name: Tribal & Cultural Expectations
+  description: "Tradition's place in your marriage — rites, language, names, roles, and who decides when culture and couple disagree."

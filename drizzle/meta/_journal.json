@@ -15,6 +15,13 @@
       "when": 1784305811190,
       "tag": "0001_special_selene",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784414047965,
+      "tag": "0002_little_forge",
+      "breakpoints": true
     }
   ]
 }

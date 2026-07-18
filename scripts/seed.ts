@@ -19,7 +19,12 @@ import { categories, culturalContexts, questions } from "../src/db/schema";
 const SEED_DIR = path.join(process.cwd(), "seed");
 
 const categorySchema = z.array(
-  z.object({ slug: z.string(), name: z.string(), icon: z.string().optional() }),
+  z.object({
+    slug: z.string(),
+    name: z.string(),
+    icon: z.string().optional(),
+    description: z.string().optional(),
+  }),
 );
 
 const contextSchema = z.array(
@@ -51,10 +56,10 @@ async function main() {
   for (const [i, c] of cats.entries()) {
     await db
       .insert(categories)
-      .values({ slug: c.slug, name: c.name, displayOrder: i, icon: c.icon })
+      .values({ slug: c.slug, name: c.name, displayOrder: i, icon: c.icon, description: c.description ?? null })
       .onConflictDoUpdate({
         target: categories.slug,
-        set: { name: c.name, displayOrder: i, icon: c.icon },
+        set: { name: c.name, displayOrder: i, icon: c.icon, description: c.description ?? null },
       });
   }
   console.log(`Categories: ${cats.length} upserted`);

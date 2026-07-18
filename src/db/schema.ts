@@ -117,6 +117,7 @@ export const categories = pgTable("category", {
   name: text("name").notNull(),
   displayOrder: integer("display_order").notNull(),
   icon: text("icon"),
+  description: text("description"),
 });
 
 /**

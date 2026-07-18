@@ -6,6 +6,7 @@ type Category = {
   slug: string;
   name: string;
   icon: string | null;
+  description: string | null;
 };
 
 type Props = {
@@ -53,37 +54,49 @@ export function DesignationForm({
           return (
             <li
               key={cat.slug}
-              className="flex items-center justify-between rounded-xl border border-ink/10 bg-white px-5 py-4"
+              className="rounded-xl border border-ink/10 bg-white px-5 py-4"
             >
-              <span className="font-medium text-ink">{cat.name}</span>
-              <div className="flex gap-2">
-                <button
-                  type="button"
-                  onClick={() => select(cat.slug, "core")}
-                  className={[
-                    "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
-                    chosen === "core"
-                      ? "bg-ink text-white"
-                      : "border border-ink/20 text-ink-soft hover:border-ink/40",
-                  ].join(" ")}
-                  aria-pressed={chosen === "core"}
-                >
-                  Core
-                </button>
-                <button
-                  type="button"
-                  onClick={() => select(cat.slug, "flexible")}
-                  className={[
-                    "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
-                    chosen === "flexible"
-                      ? "bg-candle/80 text-white"
-                      : "border border-ink/20 text-ink-soft hover:border-ink/40",
-                  ].join(" ")}
-                  aria-pressed={chosen === "flexible"}
-                >
-                  Flexible
-                </button>
+              <div className="flex items-center justify-between">
+                <span className="font-medium text-ink">{cat.name}</span>
+                <div className="flex gap-2">
+                  <button
+                    type="button"
+                    onClick={() => select(cat.slug, "core")}
+                    className={[
+                      "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
+                      chosen === "core"
+                        ? "bg-ink text-white"
+                        : "border border-ink/20 text-ink-soft hover:border-ink/40",
+                    ].join(" ")}
+                    aria-pressed={chosen === "core"}
+                  >
+                    Core
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => select(cat.slug, "flexible")}
+                    className={[
+                      "rounded-lg px-4 py-1.5 text-sm font-medium transition-colors",
+                      chosen === "flexible"
+                        ? "bg-candle/80 text-white"
+                        : "border border-ink/20 text-ink-soft hover:border-ink/40",
+                    ].join(" ")}
+                    aria-pressed={chosen === "flexible"}
+                  >
+                    Flexible
+                  </button>
+                </div>
               </div>
+              {cat.description && (
+                <details className="mt-2 text-sm">
+                  <summary className="cursor-pointer select-none text-ink-soft hover:text-ink">
+                    What&rsquo;s covered
+                  </summary>
+                  <p className="mt-1.5 pr-2 leading-relaxed text-ink-soft/80">
+                    {cat.description}
+                  </p>
+                </details>
+              )}
             </li>
           );
         })}

@@ -5,6 +5,7 @@ import {
   areAllCategoriesDesignated,
   getMySpotlights,
   getOwnAnswers,
+  getOwnProgressByCategory,
   getSessionForMember,
   hasSubmitted,
   NotSessionMemberError,
@@ -54,9 +55,12 @@ export default async function CategoryAnswerPage({
     redirect(`/sessions/${id}/designate`);
   }
 
-  const [submitted, mySpotlights] = await Promise.all([
+  const [submitted, mySpotlights, allCategories, progress, userAnswers] = await Promise.all([
     hasSubmitted(db, id, userId),
     getMySpotlights(db, id, userId),
+    getAllCategories(db),
+    getOwnProgressByCategory(db, id, userId),
+    getOwnAnswers(db, id, userId),
   ]);
   const spotlitQuestionIds = new Set(
     mySpotlights
@@ -65,8 +69,6 @@ export default async function CategoryAnswerPage({
   );
   const isPersonal = categorySlug === "personal";
 
-  // Load questions and existing answers
-  const userAnswers = await getOwnAnswers(db, id, userId);
   const answerByQuestionId = new Map(
     userAnswers
       .filter((a) => a.questionId)
@@ -104,7 +106,6 @@ export default async function CategoryAnswerPage({
       };
     });
   } else {
-    const allCategories = await getAllCategories(db);
     const cat = allCategories.find((c) => c.slug === categorySlug);
     if (!cat) {
       redirect(`/sessions/${id}/answer`);
@@ -131,6 +132,28 @@ export default async function CategoryAnswerPage({
   }
 
   const answeredCount = items.filter((i) => i.existingAnswer !== null).length;
+
+  // Compute next incomplete category for the CTA (only matters when all answered)
+  const personalProgress = progress.find((p) => p.categorySlug === "personal");
+  const allWithProgress = [
+    ...allCategories.map((c) => ({
+      slug: c.slug,
+      name: c.name,
+      displayOrder: c.displayOrder,
+      answered: progress.find((p) => p.categorySlug === c.slug)?.answered ?? 0,
+      total: progress.find((p) => p.categorySlug === c.slug)?.total ?? 0,
+    })),
+    ...(personalProgress && personalProgress.total > 0
+      ? [{ slug: "personal", name: "Personal questions", displayOrder: 9999,
+           answered: personalProgress.answered, total: personalProgress.total }]
+      : []),
+  ];
+  const currentIdx = allWithProgress.findIndex((c) => c.slug === categorySlug);
+  let nextCategory: { slug: string; name: string } | null = null;
+  for (let i = 1; i < allWithProgress.length; i++) {
+    const c = allWithProgress[(currentIdx + i) % allWithProgress.length];
+    if (c.total > 0 && c.answered < c.total) { nextCategory = c; break; }
+  }
 
   return (
     <main className="mx-auto max-w-2xl px-6 py-16">
@@ -187,12 +210,28 @@ export default async function CategoryAnswerPage({
       </div>
 
       {/* Bottom nav */}
-      <div className="mt-10">
+      <div className="mt-10 flex flex-col items-start gap-3">
+        {answeredCount === items.length && items.length > 0 && nextCategory && (
+          <Link
+            href={`/sessions/${id}/answer/${nextCategory.slug}`}
+            className="inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
+          >
+            Next: {nextCategory.name} &rarr;
+          </Link>
+        )}
+        {answeredCount === items.length && items.length > 0 && !nextCategory && (
+          <Link
+            href={`/sessions/${id}/answer`}
+            className="inline-block rounded-xl bg-ink px-6 py-3 font-medium text-white"
+          >
+            Back to all topics &rarr;
+          </Link>
+        )}
         <Link
           href={`/sessions/${id}/answer`}
           className="text-sm text-ink-soft hover:text-ink"
         >
-          ← Back to all topics
+          &larr; Back to all topics
         </Link>
       </div>
     </main>

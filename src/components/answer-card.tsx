@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState, useTransition } from "react";
+import { useRouter } from "next/navigation";
 
 type Choice = "fully_on_board" | "open_to_discussing" | "dealbreaker";
 
@@ -56,6 +57,8 @@ export function AnswerCard({
   isSpotlit: initialSpotlit = false,
   onToggleSpotlight,
 }: Props) {
+  const router = useRouter();
+  const wasUnansweredRef = useRef(existing === null);
   const [choice, setChoice] = useState<Choice | null>(existing?.choice ?? null);
   const [compromise, setCompromise] = useState(
     existing?.compromiseText ?? "",
@@ -102,6 +105,10 @@ export function AnswerCard({
         setErrorMsg(result.error);
       } else {
         showSaved();
+        if (wasUnansweredRef.current) {
+          wasUnansweredRef.current = false;
+          router.refresh();
+        }
       }
     });
   }

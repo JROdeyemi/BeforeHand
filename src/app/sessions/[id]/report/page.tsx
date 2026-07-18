@@ -9,6 +9,7 @@ import {
   NotSessionMemberError,
   ReportNotReadyError,
 } from "@/db/guards";
+import { getAllCategories } from "@/db/queries";
 import { users } from "@/db/schema";
 import { requireNamedUser } from "@/lib/require-named-user";
 import type {
@@ -57,14 +58,17 @@ export default async function ReportPage({
       ? session.partnerUserId
       : session.createdByUserId;
 
-  const [viewerUser, partnerUser, shareData, lastCompleted] = await Promise.all([
+  const [viewerUser, partnerUser, shareData, lastCompleted, allCategories] = await Promise.all([
     db.select().from(users).where(eq(users.id, userId)).then((r) => r[0]),
     partnerUserId
       ? db.select().from(users).where(eq(users.id, partnerUserId)).then((r) => r[0])
       : Promise.resolve(undefined),
     getActiveShareRequest(db, id, userId),
     getLastCompletedShare(db, id, userId),
+    getAllCategories(db),
   ]);
+
+  const categoryNameMap = new Map(allCategories.map((c) => [c.slug, c.name]));
 
   const viewerName = viewerUser?.name ?? viewerUser?.email ?? "You";
   const partnerName = partnerUser?.name ?? partnerUser?.email ?? "Your partner";
@@ -246,7 +250,7 @@ export default async function ReportPage({
                 viewerName={viewerName}
                 partnerName={partnerName}
                 partnerViewText={
-                  flag.partner_view_template
+                  flag.partner_view_template && partnerEntry(flag).choice === "fully_on_board"
                     ? resolvePlaceholders(flag.partner_view_template, partnerName)
                     : undefined
                 }
@@ -292,7 +296,7 @@ export default async function ReportPage({
                 partnerName={partnerName}
                 choiceLabel={choiceLabel}
                 partnerViewText={
-                  tension.partner_view_template
+                  tension.partner_view_template && partnerEntry(tension).choice === "fully_on_board"
                     ? resolvePlaceholders(tension.partner_view_template, partnerName)
                     : undefined
                 }
@@ -325,8 +329,8 @@ export default async function ReportPage({
                 key={cat.category}
                 className="flex items-center justify-between rounded-xl border border-ink/10 px-5 py-3"
               >
-                <span className="font-medium text-ink capitalize">
-                  {cat.category.replace(/_/g, " ")}
+                <span className="font-medium text-ink">
+                  {categoryNameMap.get(cat.category) ?? cat.category}
                 </span>
                 <span className="text-sm text-ink-soft">
                   {cat.aligned_count} of {cat.total} in sync
